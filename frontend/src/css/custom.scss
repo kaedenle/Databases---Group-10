@@ -1,7 +1,38 @@
 // Font import
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Electrolize&family=Fredoka+One&family=Sawarabi+Mincho&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap');
 // Bootstrap import
 @import 'bootstrap/scss/bootstrap.scss';
+
+$accent_color: #5E3FBE;
+$white: #FFF;
+
+.right_side{
+    background-color: #5E3FBE;
+    height: 100vh;
+    
+}
+
+.startTitle{
+    text-align: center;
+    margin: 40px auto;
+    color: white
+}
+
+body{
+    font-family:'Sawarabi Mincho', serif ;
+}
+
+.form-control-1x{
+    width: 300px;
+}
+
+.form-label{
+    color: white;
+}
+
+
+
+
+
 
 
