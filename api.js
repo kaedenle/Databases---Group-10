@@ -111,7 +111,12 @@ exports.setApp = function ( app, client )
 //------------------------------------------------------------SURVEY ENDPOINTS------------------------------------------------------------
     app.post('/get_survey', get_user, get_survey, async (req, res, next) => {
         //IN - title, userName
+        var search = [req.body.surveyID];
+        //var serach = [title, userID]
+        const [result] = await client.query('SELECT * FROM Questions WHERE surveyID = ?', search);
+
         var ret = res.locals.survey;
+        ret.questions = result
         res.status(200).json(ret);
     });
 
