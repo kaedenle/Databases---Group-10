@@ -208,11 +208,12 @@ exports.setApp = function ( app, client )
         //repeat username and email are enforced by the database
 
         //query
-        var search = [req.body.firstName, req.body.lastName, req.body.userName, req.body.email, req.body.password];
+        var id = uuid.v1();
+        var search = [req.body.firstName, req.body.lastName, req.body.userName, req.body.email, id, req.body.password];
         try
         {
             await client.query("INSERT INTO Users (firstName, lastName, userName, email, userID, password)" +
-            "VALUES (?, ?, ?, ?, UUID(), ?);", search);
+            "VALUES (?, ?, ?, ?, ?, ?);", search);
         }
         catch(e)
         {
@@ -221,7 +222,7 @@ exports.setApp = function ( app, client )
             return
         }
 
-        var ret = {userName: req.body.userName};
+        var ret = {userName: req.body.userName, firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email, userID: req.body.id};
         res.status(200).json(ret);
     });
 //------------------------------------------------------------SURVEY ENDPOINTS------------------------------------------------------------

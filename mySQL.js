@@ -24,7 +24,7 @@ async function main(){
   //await connection.query("INSERT INTO Person (PersonID, Name) VALUES (?, (?));", int);
   try
   {
-    await connection.query("DELETE FROM Type1_answers WHERE answer = 4;");
+    await connection.query("DELETE FROM Users WHERE firstName = 'Patrick';");
   }
   catch(e)
   {
@@ -37,9 +37,9 @@ async function main(){
             sql += "Type1_answers WHERE userID = ?"
         else if(type == 2)
             sql += "Type2_answers WHERE userID = ?"
-  var [results] = await connection.query(sql, ["b0c79de6-6a27-11ed-91a4-62bd4a1ad21b"])
+  //var [results] = await connection.query(sql, ["b0c79de6-6a27-11ed-91a4-62bd4a1ad21b"])
   //var obj = {userName: "Tarova"}
-  //var [results] = await connection.query("DELETE FROM Person WHERE PersonID = 3;")
+  var [results] = await connection.query("SELECT * FROM Users;")
   //var inp = ["'kaeden' OR Name = 'carl';"];
   //var [results] = await connection.query("SELECT * FROM new WHERE Name = ?", inp);
   console.log(results);
