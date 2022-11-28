@@ -205,6 +205,8 @@ exports.setApp = function ( app, client )
             return
         }
 
+        //repeat username and email are enforced by the database
+
         //query
         var search = [req.body.firstName, req.body.lastName, req.body.userName, req.body.email, req.body.password];
         try
@@ -355,7 +357,7 @@ exports.setApp = function ( app, client )
         }
 
         //no matching questions in same survey
-        const [question_match] = await client.query("SELECT * FROM Questions WHERE surveyID = ? AND question = ?", [req.body.surveyID, req.body.question]);
+        const [question_match] = await client.query("SELECT 1 FROM Questions WHERE surveyID = ? AND question = ?", [req.body.surveyID, req.body.question]);
         if(question_match.length > 0)
         {
             var ret = {error: "ERROR: question already exists in survey"} 
