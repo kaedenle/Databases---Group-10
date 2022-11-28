@@ -1,4 +1,5 @@
 const mysql = require('mysql2')
+const uuid = require('uuid');
 
 async function main(){
   /*const connection = mysql.createConnection({
@@ -14,9 +15,33 @@ async function main(){
     database: "survey_project_1",
   })
   .promise();
-  var obj = {userName: "Tarova"}
-  var [results] = await connection.query("SELECT * FROM Questions")
-  //var [results] = await connection.query("INSERT INTO Users (firstName, lastName, userName, email, userID, password) VALUES ('Kaeden', 'Le', 'kaedenle', 'kaedenle@gmail.com', 'b0c79de6-6a27-11ed-91a4-62bd4a1ad21c', 'password');");
+  
+  //var d = new Date();
+  //var int = new Date((new Date()).getTime() - ((new Date).getTimezoneOffset() * 60 * 1000));
+  //console.log(d.valueOf() + "\n" + int.valueOf());
+  //console.log(uuid.v1());
+
+  //await connection.query("INSERT INTO Person (PersonID, Name) VALUES (?, (?));", int);
+  try
+  {
+    await connection.query("DELETE FROM Type1_answers WHERE answer = 4;");
+  }
+  catch(e)
+  {
+    console.log(e);
+  }
+  var type = 1;
+  var sql = 'SELECT * FROM '
+        //type 1 or 2 question
+        if(type == 1)
+            sql += "Type1_answers WHERE userID = ?"
+        else if(type == 2)
+            sql += "Type2_answers WHERE userID = ?"
+  var [results] = await connection.query(sql, ["b0c79de6-6a27-11ed-91a4-62bd4a1ad21b"])
+  //var obj = {userName: "Tarova"}
+  //var [results] = await connection.query("DELETE FROM Person WHERE PersonID = 3;")
+  //var inp = ["'kaeden' OR Name = 'carl';"];
+  //var [results] = await connection.query("SELECT * FROM new WHERE Name = ?", inp);
   console.log(results);
   connection.end()
 }
