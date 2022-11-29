@@ -1,35 +1,44 @@
-import React, { useState } from 'react';
-import '../App.css';
-import * as FaIcons from 'react-icons/fa';
+// React components
+import React from 'react';
+import { IconContext } from 'react-icons';
 import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
-function Sidebar() {
-  const [sidebar, setSidebar] = useState(false);
+//Custom Components
+import { SidebarData } from './SidebarData';
 
-  const showSidebar = () => setSidebar(!sidebar);
+//CSS
+import '../App.css';
+import '../css/Sidebar.css';
+
+function Sidebar() {
   return (
     <>
-      <div className="Sidebar">
-        <Link
-          to="#"
-          className="menu-bars"
-        >
-          <FaIcons.FaBars onClick={showSidebar} />
-        </Link>
-      </div>
-      <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-        <ul className="nav-menu-items">
-          <li className="navbar-toggle">
-            <Link
-              to="#"
-              className="menu-bars"
-            >
+      <IconContext.Provider value={{ color: '#fff' }}>
+        <nav className="nav-menu">
+          <ul className="nav-menu-items">
+            {SidebarData.map((item, index) => {
+              return (
+                <>
+                  <li
+                    key={index}
+                    className={item.cName}
+                  >
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                </>
+              );
+            })}
+            <li className="logout-button">
               <AiIcons.AiOutlineClose />
-            </Link>
-          </li>
-        </ul>
-      </nav>
+              Log out
+            </li>
+          </ul>
+        </nav>
+      </IconContext.Provider>
     </>
   );
 }

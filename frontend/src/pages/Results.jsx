@@ -1,9 +1,11 @@
 import React from 'react';
 
-import '../App.css';
-
 function Results() {
-  return <div></div>;
+  return (
+    <div className="results">
+      <h1>Hello</h1>
+    </div>
+  );
 }
 
 export default Results;

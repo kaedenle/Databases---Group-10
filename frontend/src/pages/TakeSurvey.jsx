@@ -1,9 +1,12 @@
 import React from 'react';
 
-import '../App.css';
-
 function TakeSurvey() {
-  return <div></div>;
+  return (
+    <div className="survey">
+      {' '}
+      <p>Hello</p>
+    </div>
+  );
 }
 
 export default TakeSurvey;

@@ -1,9 +1,11 @@
 import React from 'react';
 
-import '../App.css';
-
 function CreateSurvey() {
-  return <div></div>;
+  return (
+    <div className="create">
+      <p>Hello</p>
+    </div>
+  );
 }
 
 export default CreateSurvey;

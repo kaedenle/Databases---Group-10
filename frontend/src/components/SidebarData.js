@@ -1,25 +1,32 @@
 import React from 'react';
-impoort;
+import * as FaIcons from 'react-icons/fa';
+import * as AiIcons from 'react-icons/ai';
+import * as MdIcons from 'react-icons/md';
+import * as RiIcons from 'react-icons/ri';
 
 export const SidebarData = [
   {
     title: 'Home',
-    icon: <HomeRoundedIcon />,
-    link: '/Home',
+    icon: <AiIcons.AiFillHome />,
+    path: '/',
+    cName: 'nav-text',
   },
   {
     title: 'Create Survey',
-    icon: <BorderColorIcon />,
-    link: '/CreateSurvey',
+    icon: <MdIcons.MdOutlineBorderColor />,
+    path: '/CreateSurvey',
+    cName: 'nav-text',
   },
   {
     title: 'Surveys',
-    icon: <DescriptionIcon />,
-    link: '/TakeSurvey',
+    icon: <RiIcons.RiSurveyLine />,
+    path: '/TakeSurvey',
+    cName: 'nav-text',
   },
   {
     title: 'Results',
-    icon: <AssessmentIcon />,
-    link: '/Results',
+    icon: <FaIcons.FaChartBar />,
+    path: '/Results',
+    cName: 'nav-text',
   },
 ];
