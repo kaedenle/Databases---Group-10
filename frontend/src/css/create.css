@@ -1,0 +1,12 @@
+.create {
+  display: flex;
+  height: 90vh;
+  margin-left: 250px;
+  flex-direction: column;
+  font-family: 'Solway', serif;
+}
+
+.title {
+  width: 200px;
+  font-size: 3rem;
+}
