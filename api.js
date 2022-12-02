@@ -181,7 +181,7 @@ exports.setApp = function ( app, client )
         }
 
         //assumes there's only one of each username, returns one made first if multiple
-        var ret = {userID: result[0].userID};
+        var ret = {userID: result[0].userID, firstName: result[0].firstName, lastName: result[0].lastName, email: result[0].email, username: result[0].username};
         res.status(200).json(ret);
     });
 
@@ -237,7 +237,39 @@ exports.setApp = function ( app, client )
         ret.questions = result
         res.status(200).json(ret);
     });
+//----------LIST USER SURVEY----------
+    //get list of surveys user has created
+    app.post('/list_user_survey', filter_questionID, filter_surveyID, get_user, async (req, res, next) => {
+        //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
 
+        var sql = 'SELECT * FROM Surveys WHERE creatorID = ?';
+        //default values
+        var page = req.body.page
+        if(!page)
+            page = 0
+
+        var per_page = req.body.per_page
+        if(!per_page)
+            per_page = 10
+
+        var active = req.body.active;
+        if(active == null || active === true)
+            sql += ' AND active = 1';
+
+        sql += ' LIMIT ?, ?';
+
+        //query
+        var search = [req.body.userID, page * per_page, per_page];
+        const [result] = await client.query(sql, search);
+        if(result.length === 0){
+            var ret = {error: "ERROR: User has no created surveys"} 
+            res.status(200).json(ret);
+            return
+        }
+
+        var ret = {info: result};
+        res.status(200).json(ret);
+    });
 //----------CREATE SURVEY----------
     app.post('/create_survey', filter_questionID, filter_surveyID, get_user, async (req, res, next) =>
     {
@@ -261,8 +293,8 @@ exports.setApp = function ( app, client )
         }
 
         //current datetime in timezone in unix (UTC)
-        var currentTime = (new Date()).getTime() - ((new Date).getTimezoneOffset() * 60 * 1000)
-        //var currentTime = (new Date().getTime());
+        //var currentTime = (new Date()).getTime() - ((new Date()).getTimezoneOffset() * 60 * 1000)
+        var currentTime = (new Date().getTime());
 
         //default values
         if(!req.body.description)
@@ -273,6 +305,18 @@ exports.setApp = function ( app, client )
         //check datetime
         req.body.period_end = new Date(req.body.period_end);
         req.body.period_start = new Date(req.body.period_start);
+
+        //convert time to UTC
+        var start_utc = new Date(req.body.period_start.toUTCString())
+        var end_utc = new Date(req.body.period_end.toUTCString()) 
+        console.log(req.body.period_start.toUTCString() + " " + req.body.period_end.toUTCString());
+
+        //correct datetime for timezone
+        //req.body.period_end = new Date(req.body.period_end.getTime() - (req.body.period_end.getTimezoneOffset() * 60 * 1000))
+        //req.body.period_start = new Date(req.body.period_start.getTime() - (req.body.period_start.getTimezoneOffset() * 60 * 1000))
+        var start_int = start_utc.getTime();
+        var end_int = end_utc.getTime();
+        
 
         if(isNaN(req.body.period_end))
         {
@@ -293,8 +337,9 @@ exports.setApp = function ( app, client )
             return
         }
         //check whether active
+        console.log(new Date(currentTime));
         var active = 0;
-        if(req.body.period_start <= currentTime && currentTime <= req.body.period_end)
+        if(start_int <= currentTime && currentTime <= end_int)
             active = 1;
 
         //query
@@ -316,6 +361,108 @@ exports.setApp = function ( app, client )
         }
 
         var ret = {title: req.body.title, userID: req.body.userID, description: req.body.description, period_start: req.body.period_start, period_end: req.body.period_end, active: active, surveyID: surveyID};
+        res.status(200).json(ret);
+    });
+//----------LIST USER SURVEY----------
+    //get list of surveys user is participating in
+    app.post('/list_participant_survey', filter_questionID, filter_surveyID, get_user, async (req, res, next) => {
+        //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
+
+        //default values
+        var page = req.body.page
+        if(!page)
+            page = 0
+
+        var per_page = req.body.per_page
+        if(!per_page)
+            per_page = 10
+        console.log(req.body.userID);
+
+        const [result_ids] = await client.query('SELECT surveyID FROM Can_access WHERE userID = ? LIMIT ?, ?', [req.body.userID, page * per_page, per_page]);
+        console.log(result_ids);
+        //error message
+        if(result_ids.length === 0){
+            var ret = {error: "ERROR: User has no surveys"} 
+            res.status(200).json(ret);
+            return
+        }
+
+        sql = 'SELECT * FROM Surveys WHERE surveyID in (?)'
+        var active = req.body.active;
+        if(active == null || active === true)
+            sql += ' AND active = 1';
+
+        //query
+        var surveys = [];
+        //unpackage result_ids into surveys
+        for(let i = 0; i < result_ids.length; i++)
+            surveys.push(result_ids[i].surveyID)
+        
+        var search = [surveys, page * per_page, per_page];
+
+        const [result] = await client.query(sql, search);
+        console.log(result);
+
+        var ret = {info: result};
+        res.status(200).json(ret);
+    });
+
+//----------ADD PARTICIPANTS----------
+    //get list of surveys user has created
+    app.post('/add_participants', filter_questionID, get_user, get_survey, async (req, res, next) => {
+        //IN - part_emails, surveyID OR (userID (creator's) and title)
+
+        //query for the participant via their emails (unique)
+        //error messages
+        if(!Array.isArray(req.body.part_emails))
+        {
+            var ret = {error: "ERROR: mismatch type, need Array"} 
+            res.status(200).json(ret);
+            return
+        }
+        if(req.body.part_emails.length == 0)
+        {
+            var ret = {error: "ERROR: no emails provided"} 
+            res.status(200).json(ret);
+            return
+        }
+        const [check_repeats] = await client.query('SELECT email FROM Can_access WHERE surveyID = ? AND email in (?)', [req.body.surveyID, req.body.part_emails])
+
+        //unload check repeats into array
+        var repeats = [];
+        for(let i = 0; i < check_repeats.length; i++)
+            repeats.push(check_repeats[i].email)
+        
+        console.log("CR: ", repeats)
+        let use_list = req.body.part_emails.filter(x => !repeats.includes(x));
+        console.log("UL: ", use_list);
+
+        if(use_list.length == 0)
+        {
+            var ret = {error: "ERROR: all emails already paritipating"} 
+            res.status(200).json(ret);
+            return
+        }
+        //get all users already participating in survey
+        //difference of arrays
+        //use resulting array
+        const [result] = await client.query('SELECT userID FROM Users WHERE email in (?)', [req.body.part_emails]);
+        console.log(result)
+        
+        var part_id = result[0].userID;
+        for(let i = 0; i < req.body.part_emails.length; i++){
+            try{
+                await client.query("INSERT INTO Can_access (userID, email, surveyID) VALUES (?, ?, ?);", [part_id, req.body.part_emails[i], req.body.surveyID])  
+            }
+            catch(e){
+                var ret = {error: "ERROR: " + e}
+                res.status(200).json(ret);
+                return
+            }
+        }
+        
+        //use list is list of people added
+        var ret = {part_userID: part_id, part_email: use_list, surveyID: req.body.surveyID};
         res.status(200).json(ret);
     });
 
