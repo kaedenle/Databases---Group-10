@@ -29,4 +29,10 @@ export const SidebarData = [
     path: '/Results',
     cName: 'nav-text',
   },
+  {
+    title: 'Register',
+    icon: <FaIcons.FaChartBar />,
+    path: '/Register',
+    cName: 'nav-text',
+  },
 ];

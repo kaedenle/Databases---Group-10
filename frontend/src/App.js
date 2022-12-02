@@ -2,13 +2,12 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Register from './pages/Register';
-
 // Pages
 import Home from './pages/Home';
 import CreateSurvey from './pages/CreateSurvey';
 import TakeSurvey from './pages/TakeSurvey';
 import Results from './pages/Results';
+import Register from './pages/Register';
 
 //Custom Components
 import Sidebar from './components/Sidebar';
@@ -34,6 +33,10 @@ function App() {
           <Route
             path="/results"
             element={<Results />}
+          />
+          <Route
+            path="/register"
+            element={<Register />}
           />
         </Routes>
       </Router>
