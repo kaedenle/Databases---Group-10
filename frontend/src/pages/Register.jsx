@@ -1,12 +1,12 @@
-import "../App.css";
-import React from "react";
+import '../App.css';
+import React from 'react';
 
 //Bootstrap imports
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 function Register() {
   return (
@@ -15,7 +15,10 @@ function Register() {
         <Col sm={7}>
           <LeftHomeSection />
         </Col>
-        <Col sm={5} className="right_side">
+        <Col
+          sm={5}
+          className="right_side"
+        >
           <RightHomeSection />
         </Col>
       </Row>
@@ -43,33 +46,97 @@ function LeftHomeSection() {
 }
 
 function RightHomeSection() {
+  const register = async (event) => {
+    try {
+      const obj = {
+        firstName: 'Caitlin',
+        lastName: 'Fabian',
+        userName: 'CaitlinFabian',
+        email: 'CaitlinFabian@gmail.com',
+        password: 'password',
+      };
+
+      var js = JSON.stringify(obj);
+
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      let res = JSON.parse(await response.text());
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div>
       {/* Register User */}
       <h2 class="startTitle">Let's Get Started</h2>
       <div className="d-flex justify-content-center">
         <Form>
-          <Form.Group className="mb-3" controlId="formBasicFirst">
+          <Form.Group
+            className="mb-3"
+            controlId="formBasicFirst"
+          >
             <Form.Label>First Name</Form.Label>
-            <Form.Control size="1x" type="text" placeholder="First Name" />
+            <Form.Control
+              size="1x"
+              type="text"
+              placeholder="First Name"
+            />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicLast">
+          <Form.Group
+            className="mb-3"
+            controlId="formBasicLast"
+          >
             <Form.Label>Last Name</Form.Label>
-            <Form.Control size="1x" type="text" placeholder="Last Name" />
+            <Form.Control
+              size="1x"
+              type="text"
+              placeholder="Last Name"
+            />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicUsername">
+          <Form.Group
+            className="mb-3"
+            controlId="formBasicUsername"
+          >
             <Form.Label>Username</Form.Label>
-            <Form.Control size="1x" type="text" placeholder="Username" />
+            <Form.Control
+              size="1x"
+              type="text"
+              placeholder="Username"
+            />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group
+            className="mb-3"
+            controlId="formBasicEmail"
+          >
             <Form.Label>Email address</Form.Label>
-            <Form.Control size="1x" type="email" placeholder="Enter email" />
+            <Form.Control
+              size="1x"
+              type="email"
+              placeholder="Enter email"
+            />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group
+            className="mb-3"
+            controlId="formBasicPassword"
+          >
             <Form.Label>Password</Form.Label>
-            <Form.Control size="1x" type="password" placeholder="Password" />
+            <Form.Control
+              size="1x"
+              type="password"
+              placeholder="Password"
+            />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button
+            variant="primary"
+            type="button"
+            onClick={register}
+          >
             Submit
           </Button>
         </Form>
