@@ -260,8 +260,9 @@ exports.setApp = function ( app, client )
             return 
         }
 
-        //current datetime in timezone in unix 
+        //current datetime in timezone in unix (UTC)
         var currentTime = (new Date()).getTime() - ((new Date).getTimezoneOffset() * 60 * 1000)
+        //var currentTime = (new Date().getTime());
 
         //default values
         if(!req.body.description)

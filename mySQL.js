@@ -24,7 +24,7 @@ async function main(){
   //await connection.query("INSERT INTO Person (PersonID, Name) VALUES (?, (?));", int);
   try
   {
-    await connection.query("DELETE FROM Users WHERE firstName = 'Patrick';");
+    await connection.query("DELETE FROM Users WHERE firstName = 'Caitlin';");
   }
   catch(e)
   {
