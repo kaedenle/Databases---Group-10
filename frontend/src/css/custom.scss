@@ -3,6 +3,7 @@
 // Bootstrap import
 @import 'bootstrap/scss/bootstrap.scss';
 
+
 $accent_color: #5E3FBE;
 $white: #FFF;
 
@@ -30,7 +31,7 @@ body{
     color: white;
 }
 
-
+@import './create.scss'
 
 
 

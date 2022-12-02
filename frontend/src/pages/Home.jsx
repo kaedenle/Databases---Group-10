@@ -10,10 +10,12 @@ import thumbnail from '../assets/survey-thumbnail.png';
 // CSS
 import '../App.css';
 import '../css/home.css';
+import Sidebar from '../components/Sidebar';
 
 function Home() {
   return (
     <div className="home">
+      <Sidebar />
       <h1 className="home-title"> Active Title</h1>
       <hr className="header" />
       <Container fluid>
