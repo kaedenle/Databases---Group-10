@@ -8,6 +8,7 @@ import '../css/create.scss';
 
 import thumbnail from '../assets/survey-thumbnail.png';
 import QuestionContainer from './QuestionContainer';
+import CreatedModal from './CreatedModal';
 
 function CreateSurvey() {
   const current = new Date();
@@ -16,14 +17,18 @@ function CreateSurvey() {
   const [description, setDescription] = useState();
   const [start, setStart] = useState(current);
   const [end, setEnd] = useState(current);
+  const [message, setMessage] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   const createSurvey = async (event) => {
     try {
       //IN - title, (userID or userName), description (optional),
       // period_start (optional), period_end
 
+      // Accessing DB
       const obj = {
         title: title,
+        // userName: localStorage.getItem('userName'),
         userName: 'userName',
         desciption: description,
         period_start: start,
@@ -40,6 +45,13 @@ function CreateSurvey() {
 
       let res = JSON.parse(await response.text());
       console.log(res);
+      if (res.error && res.error !== '') {
+        console.log(message);
+        setMessage('Username is taken, please try a different one.');
+      } else {
+        setMessage('');
+        // isOpen && <CreatedModal setIsOpen={setIsOpen} />;
+      }
     } catch (e) {
       alert(e.toString());
     }
@@ -132,10 +144,8 @@ function CreateSurvey() {
           variant="dark"
           onClick={createSurvey}
         >
-          {' '}
           Create Survey
         </Button>
-        <QuestionContainer />
       </div>
     </div>
   );
