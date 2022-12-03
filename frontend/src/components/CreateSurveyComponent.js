@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import '../css/create.scss';
 
 import thumbnail from '../assets/survey-thumbnail.png';
+import QuestionContainer from './QuestionContainer';
 
 function CreateSurvey() {
   const current = new Date();
@@ -134,14 +135,7 @@ function CreateSurvey() {
           {' '}
           Create Survey
         </Button>
-        <h3 style={{ marginLeft: '20px' }}>Questions:</h3>
-        <Button
-          style={{ marginLeft: '20px' }}
-          variant="dark"
-          className="w-75"
-        >
-          +
-        </Button>
+        <QuestionContainer />
       </div>
     </div>
   );

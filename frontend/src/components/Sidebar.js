@@ -10,6 +10,7 @@ import { SidebarData } from './SidebarData';
 //CSS
 import '../App.css';
 import '../css/Sidebar.css';
+import LogoutButton from './LogoutButton';
 
 function Sidebar() {
   return (
@@ -32,9 +33,12 @@ function Sidebar() {
                 </>
               );
             })}
-            <li className="logout-button">
+            <li
+              className="text-center position-absolute bottom-0 ml-5 mb-5"
+              style={{ listStyle: 'none', margin: '65px' }}
+            >
               <AiIcons.AiOutlineClose />
-              Log out
+              <LogoutButton />
             </li>
           </ul>
         </nav>

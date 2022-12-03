@@ -80,14 +80,13 @@ function RightHomeSection({ navigation }) {
       if (res.error && res.error !== '') {
         console.log(message);
         setMessage('Username is taken, please try a different one.');
-        console.log('help');
       } else {
         setMessage('');
         navigate('/Home');
 
         const user = {
-          firstName: firstName,
-          lastName: lastName,
+          userName: userName,
+          password: password,
         };
         localStorage.getItem('user_data', JSON.stringify(user));
       }

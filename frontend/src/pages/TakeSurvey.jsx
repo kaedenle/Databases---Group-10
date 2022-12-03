@@ -1,11 +1,16 @@
 import React from 'react';
 
+import Sidebar from '../components/Sidebar';
+
 function TakeSurvey() {
   return (
-    <div className="survey">
-      {' '}
-      <p>Hello</p>
-    </div>
+    <>
+      <Sidebar />
+      <div className="survey">
+        {' '}
+        <p>Hello</p>
+      </div>
+    </>
   );
 }
 

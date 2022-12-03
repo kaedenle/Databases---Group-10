@@ -1,10 +1,16 @@
 import React from 'react';
 
+//custom imports
+import Sidebar from '../components/Sidebar';
+
 function Results() {
   return (
-    <div className="results">
-      <h1>Hello</h1>
-    </div>
+    <>
+      <Sidebar />
+      <div className="results">
+        <h1>Hello</h1>
+      </div>
+    </>
   );
 }
 
