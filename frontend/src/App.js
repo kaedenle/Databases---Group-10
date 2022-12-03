@@ -8,6 +8,7 @@ import CreateSurvey from './pages/CreateSurvey';
 import TakeSurvey from './pages/TakeSurvey';
 import Results from './pages/Results';
 import Register from './pages/Register';
+import LogIn from './pages/LogIn';
 
 //Custom Components
 import Sidebar from './components/Sidebar';
@@ -16,27 +17,31 @@ function App() {
   return (
     <>
       <Router>
-        <Sidebar />
         <Routes>
           <Route
-            path="/"
+            path="/Home"
             element={<Home />}
           />
           <Route
-            path="/createsurvey"
+            path="/CreateSurvey"
             element={<CreateSurvey />}
           />
           <Route
-            path="/takeSurvey"
+            path="/TakeSurvey"
             element={<TakeSurvey />}
           />
           <Route
-            path="/results"
+            path="/Results"
             element={<Results />}
           />
           <Route
-            path="/register"
+            exact
+            path="/"
             element={<Register />}
+          />
+          <Route
+            path="/LogIn"
+            element={<LogIn />}
           />
         </Routes>
       </Router>

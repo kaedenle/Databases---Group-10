@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-function Register() {
+function Register({ navigation }) {
   return (
     <Container className="mw-100">
       <Row>
@@ -47,28 +47,22 @@ function LeftHomeSection() {
   );
 }
 
-function RightHomeSection({ navigation }) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+function RightHomeSection(navigation) {
   const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  const register = async (event) => {
+  const doLogin = async (event) => {
     try {
       const obj = {
-        firstName: firstName,
-        lastName: lastName,
         userName: userName,
-        email: email,
         password: password,
       };
 
       var js = JSON.stringify(obj);
 
-      const response = await fetch('http://localhost:5000/register', {
+      const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
@@ -84,10 +78,11 @@ function RightHomeSection({ navigation }) {
       } else {
         setMessage('');
         navigate('/Home');
+        console.log('me');
 
         const user = {
-          firstName: firstName,
-          lastName: lastName,
+          userName: userName,
+          password: password,
         };
         localStorage.getItem('user_data', JSON.stringify(user));
       }
@@ -101,10 +96,10 @@ function RightHomeSection({ navigation }) {
       {/* Register User */}
       <h1 className="startTitle">Let's Get Started</h1>
       <p className="d-flex justify-content-center">
-        Already have an Account?
+        Don't have an account?
         <Button
           variant="link"
-          onClick={() => navigate('/LogIn')}
+          onClick={() => navigate('/')}
         >
           Click Here
         </Button>
@@ -114,33 +109,7 @@ function RightHomeSection({ navigation }) {
           <Form.Group
             className="mb-3"
             controlId="formBasicFirst"
-          >
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              size="1x"
-              type="text"
-              placeholder="First Name"
-              onChange={(e) => {
-                e.preventDefault();
-                setFirstName(e.target.value);
-              }}
-            />
-          </Form.Group>
-          <Form.Group
-            className="mb-3"
-            controlId="formBasicLast"
-          >
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control
-              size="1x"
-              type="text"
-              placeholder="Last Name"
-              onChange={(e) => {
-                e.preventDefault();
-                setLastName(e.target.value);
-              }}
-            />
-          </Form.Group>
+          ></Form.Group>
           <Form.Group
             className="mb-3"
             controlId="formBasicUsername"
@@ -153,21 +122,6 @@ function RightHomeSection({ navigation }) {
               onChange={(e) => {
                 e.preventDefault();
                 setUserName(e.target.value);
-              }}
-            />
-          </Form.Group>
-          <Form.Group
-            className="mb-3"
-            controlId="formBasicEmail"
-          >
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              size="1x"
-              type="email"
-              placeholder="Enter email"
-              onChange={(e) => {
-                e.preventDefault();
-                setEmail(e.target.value);
               }}
             />
           </Form.Group>
@@ -190,10 +144,10 @@ function RightHomeSection({ navigation }) {
             variant="primary"
             type="button"
             onClick={() => {
-              register();
+              doLogin();
             }}
           >
-            Submit
+            Log In
           </Button>
         </Form>
       </div>
