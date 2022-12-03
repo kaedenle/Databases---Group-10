@@ -83,7 +83,7 @@ function RightHomeSection({ navigation }) {
         console.log('help');
       } else {
         setMessage('');
-        navigate('/home');
+        navigate('/Home');
         console.log('me');
 
         const user = {
@@ -105,7 +105,7 @@ function RightHomeSection({ navigation }) {
         Already have an Account?
         <Button
           variant="link"
-          onPress={() => navigation.navigate('LogIn')}
+          onClick={() => navigate('/LogIn')}
         >
           Click Here
         </Button>

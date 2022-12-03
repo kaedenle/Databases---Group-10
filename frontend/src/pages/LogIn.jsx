@@ -77,12 +77,12 @@ function RightHomeSection(navigation) {
         console.log('help');
       } else {
         setMessage('');
-        navigate('/home');
+        navigate('/Home');
         console.log('me');
 
         const user = {
           userName: userName,
-          Password: password,
+          password: password,
         };
         localStorage.getItem('user_data', JSON.stringify(user));
       }
@@ -97,12 +97,12 @@ function RightHomeSection(navigation) {
       <h1 className="startTitle">Let's Get Started</h1>
       <p className="d-flex justify-content-center">
         Don't have an account?
-        <button
+        <Button
           variant="link"
-          onPress={() => navigation.navigate('register')}
+          onClick={() => navigate('/')}
         >
-          CLick Here
-        </button>
+          Click Here
+        </Button>
       </p>
       <div className="d-flex justify-content-center">
         <Form>

@@ -19,39 +19,20 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* <Route element={<LoggedIn />}>
-            <Route
-              path="/home"
-              element={<Home />}
-            />
-            <Route
-              path="/createsurvey"
-              element={<CreateSurvey />}
-            />
-            <Route
-              path="/takeSurvey"
-              element={<TakeSurvey />}
-            />
-            <Route
-              path="/results"
-              element={<Results />}
-            />
-          </Route> */}
-
           <Route
-            path="/home"
+            path="/Home"
             element={<Home />}
           />
           <Route
-            path="/createsurvey"
+            path="/CreateSurvey"
             element={<CreateSurvey />}
           />
           <Route
-            path="/takeSurvey"
+            path="/TakeSurvey"
             element={<TakeSurvey />}
           />
           <Route
-            path="/results"
+            path="/Results"
             element={<Results />}
           />
           <Route
@@ -60,7 +41,7 @@ function App() {
             element={<Register />}
           />
           <Route
-            path="/login"
+            path="/LogIn"
             element={<LogIn />}
           />
         </Routes>
