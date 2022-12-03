@@ -10,21 +10,25 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-function Register({ navigation }) {
+// custom components
+
+function Register() {
   return (
-    <Container className="mw-100">
-      <Row>
-        <Col sm={7}>
-          <LeftHomeSection />
-        </Col>
-        <Col
-          sm={5}
-          className="right_side"
-        >
-          <RightHomeSection />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container className="mw-100">
+        <Row>
+          <Col sm={7}>
+            <LeftHomeSection />
+          </Col>
+          <Col
+            sm={5}
+            className="right_side"
+          >
+            <RightHomeSection />
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 
@@ -78,7 +82,6 @@ function RightHomeSection(navigation) {
       } else {
         setMessage('');
         navigate('/Home');
-        console.log('me');
 
         const user = {
           userName: userName,

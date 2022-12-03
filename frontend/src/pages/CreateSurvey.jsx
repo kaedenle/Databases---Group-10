@@ -8,9 +8,16 @@ import '../css/create.scss';
 
 //custom components
 import CreateSurveyComponent from '../components/CreateSurveyComponent';
+import Sidebar from '../components/Sidebar';
+import QuestionContainer from '../components/QuestionContainer';
 
 function CreateSurvey() {
-  return <CreateSurveyComponent />;
+  return (
+    <>
+      <Sidebar />
+      <CreateSurveyComponent />
+    </>
+  );
 }
 
 export default CreateSurvey;
