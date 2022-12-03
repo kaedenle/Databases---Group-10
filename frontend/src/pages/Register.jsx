@@ -88,7 +88,7 @@ function RightHomeSection({ navigation }) {
           userName: userName,
           password: password,
         };
-        localStorage.getItem('user_data', JSON.stringify(user));
+        localStorage.setItem('user_data', JSON.stringify(user));
       }
     } catch (e) {
       alert(e.toString());

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 //Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 //css
 import '../css/create.scss';
 
@@ -14,11 +15,15 @@ function CreateSurvey() {
   const current = new Date();
 
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState();
+  const [description, setDescription] = useState('');
   const [start, setStart] = useState(current);
   const [end, setEnd] = useState(current);
   const [message, setMessage] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [modalShow, setmodalShow] = useState(false);
+
+  const handleShow = () => setmodalShow(true);
+
+  var user_data = JSON.parse(localStorage.getItem('user_data'));
 
   const createSurvey = async (event) => {
     try {
@@ -28,9 +33,8 @@ function CreateSurvey() {
       // Accessing DB
       const obj = {
         title: title,
-        // userName: localStorage.getItem('userName'),
-        userName: 'userName',
-        desciption: description,
+        userName: user_data.userName,
+        description: description,
         period_start: start,
         period_end: end,
       };
@@ -47,10 +51,10 @@ function CreateSurvey() {
       console.log(res);
       if (res.error && res.error !== '') {
         console.log(message);
-        setMessage('Username is taken, please try a different one.');
+        setMessage(message);
       } else {
         setMessage('');
-        // isOpen && <CreatedModal setIsOpen={setIsOpen} />;
+        handleShow();
       }
     } catch (e) {
       alert(e.toString());
@@ -137,7 +141,6 @@ function CreateSurvey() {
             onChange={(e) => setEnd(e.target.value)}
           />
         </Form>
-
         <Button
           className="mb-3"
           style={{ marginLeft: '20px' }}
@@ -146,6 +149,11 @@ function CreateSurvey() {
         >
           Create Survey
         </Button>
+        <CreatedModal
+          show={modalShow}
+          onHide={() => setmodalShow(false)}
+          title={title}
+        />
       </div>
     </div>
   );

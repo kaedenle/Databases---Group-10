@@ -1,38 +1,40 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from 'react-router-dom';
 
-function CreatedModal() {
-  const [show, setShow] = useState(false);
+function CreatedModal(props) {
+  const navigate = useNavigate();
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+  const toEdit = () => {
+    navigate('/EditSurveyPage', { state: { title: props.title } });
+  };
   return (
     <>
-      <Button
-        variant="primary"
-        onClick={handleShow}
-      >
-        Launch demo modal
-      </Button>
-
       <Modal
-        show={show}
-        onHide={handleClose}
+        show={props.show}
+        onHide={props.onHide}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Congrats!
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, You successfully created a Survey!</Modal.Body>
+        <Modal.Body>
+          <h4>Centered Modal</h4>
+          <p>You have successfully created a survey!</p>
+        </Modal.Body>
         <Modal.Footer>
           <Button
-            variant="primary"
             onClick={() => {
-              handleClose();
+              props.onHide();
+              toEdit();
             }}
           >
-            Save Changes
+            Click Here to Edit
           </Button>
         </Modal.Footer>
       </Modal>

@@ -9,6 +9,7 @@ import TakeSurvey from './pages/TakeSurvey';
 import Results from './pages/Results';
 import Register from './pages/Register';
 import LogIn from './pages/LogIn';
+import EditSurveyPage from './pages/EditSurveyPage';
 
 //Custom Components
 import Sidebar from './components/Sidebar';
@@ -42,6 +43,10 @@ function App() {
           <Route
             path="/LogIn"
             element={<LogIn />}
+          />
+          <Route
+            path="/EditSurveyPage"
+            element={<EditSurveyPage />}
           />
         </Routes>
       </Router>
