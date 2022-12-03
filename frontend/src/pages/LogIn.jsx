@@ -77,7 +77,6 @@ function RightHomeSection(navigation) {
 
       if (res.error && res.error !== '') {
         console.log(message);
-        setMessage('Username is taken, please try a different one.');
         console.log('help');
       } else {
         setMessage('');
@@ -87,7 +86,7 @@ function RightHomeSection(navigation) {
           userName: userName,
           password: password,
         };
-        localStorage.getItem('user_data', JSON.stringify(user));
+        localStorage.setItem('user_data', JSON.stringify(user));
       }
     } catch (e) {
       alert(e.toString());
