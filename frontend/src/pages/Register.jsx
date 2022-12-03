@@ -84,7 +84,6 @@ function RightHomeSection({ navigation }) {
       } else {
         setMessage('');
         navigate('/Home');
-        console.log('me');
 
         const user = {
           firstName: firstName,

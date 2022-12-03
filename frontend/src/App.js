@@ -12,7 +12,6 @@ import LogIn from './pages/LogIn';
 
 //Custom Components
 import Sidebar from './components/Sidebar';
-import LoggedIn from './components/LoggedIn';
 
 function App() {
   return (
