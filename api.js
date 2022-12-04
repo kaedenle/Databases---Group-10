@@ -356,7 +356,8 @@ exports.setApp = function ( app, client )
             return
         }
 
-        var ret = {title: req.body.title, userID: req.body.userID, description: req.body.description, period_start: req.body.period_start, period_end: req.body.period_end, active: active, surveyID: surveyID};
+        var ret = {title: req.body.title, userID: req.body.userID, description: req.body.description, period_start: req.body.period_start, 
+            period_end: req.body.period_end, active: active, surveyID: surveyID, currentTime: new Date(currentTime)};
         res.status(200).json(ret);
     });
 //----------LIST USER SURVEY----------
