@@ -17,11 +17,10 @@ function Results() {
   useEffect(() => {
     const get_surveys = async (event) => {
       try {
-        //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
+        //IN - userName, page (optional = 0), per_page (optional = 10)
 
         const obj = {
           userName: user_data.userName,
-          page: 1,
         };
 
         var js = JSON.stringify(obj);
@@ -48,7 +47,7 @@ function Results() {
       }
     };
     get_surveys();
-  }, []);
+  }, [surveyList]);
 
   function formatDate(string) {
     var options = { year: 'numeric', month: 'long', day: 'numeric' };

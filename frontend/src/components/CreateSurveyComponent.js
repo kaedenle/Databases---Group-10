@@ -125,7 +125,7 @@ function CreateSurvey() {
             type="date"
             name="date_of_birth"
             className="mb-2"
-            style={{ marginLeft: '20px' }}
+            style={{ marginLeft: '20px', width: '25%' }}
             onChange={(e) => setStart(e.target.value)}
           />
           <Form.Label
@@ -135,7 +135,7 @@ function CreateSurvey() {
             End Date:
           </Form.Label>
           <Form.Control
-            style={{ marginLeft: '20px' }}
+            style={{ marginLeft: '20px', width: '25%' }}
             className="mb-3"
             type="date"
             onChange={(e) => setEnd(e.target.value)}

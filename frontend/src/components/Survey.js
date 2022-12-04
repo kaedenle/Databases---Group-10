@@ -8,7 +8,8 @@ import Sidebar from './Sidebar';
 
 function Survey() {
   const [message, setMessage] = useState('');
-  const [questionList, setquestionList] = useState([]);
+  const [surveyList, setSurveyList] = useState([]);
+  const [title, setTitle] = useState('');
   const { id } = useParams();
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
@@ -41,28 +42,20 @@ function Survey() {
         } else {
           setMessage('');
           console.log(res);
+          setTitle(res.title);
         }
       } catch (e) {
         alert(e.toString());
       }
     };
     getSurvey();
-  }, []);
+  }, [surveyList]);
 
   return (
     <div>
       <Sidebar />
       <div className="edit">
-        <p className="m-4">hello</p>
-        <Link
-          to=".."
-          relative="path"
-        >
-          Cancel
-        </Link>
-        <div>
-          <h2>Now showing post {id}</h2>
-        </div>
+        <h2 className="m-5">Survey Responses</h2>
       </div>
     </div>
   );

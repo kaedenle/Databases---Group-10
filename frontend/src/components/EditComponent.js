@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { format } from 'date-fns';
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/esm/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import thumbnail from '../assets/survey-thumbnail.png';
 import Question from './Question';
+const fakeApi = () => console.log('Api is called');
 
 function EditSurveyPage(props) {
   var user_data = JSON.parse(localStorage.getItem('user_data'));
@@ -20,6 +22,24 @@ function EditSurveyPage(props) {
   const [question, setQuestion] = useState('');
   const [type, setType] = useState(1);
   const [questionList, setQuestionList] = useState([]);
+  const [surveyID, setSurveyID] = useState('');
+  const [part, setPart] = useState('');
+  const [partList, setPartList] = useState([]);
+
+  const [inputValue, setInputValue] = useState('');
+  const [timer, setTimer] = useState(null);
+
+  const inputChanged = (e) => {
+    setInputValue(e.target.value);
+
+    clearTimeout(timer);
+
+    const newTimer = setTimeout(() => {
+      fakeApi();
+    }, 500);
+
+    setTimer(newTimer);
+  };
 
   useEffect(() => {
     const getSurvey = async (event) => {
@@ -44,6 +64,7 @@ function EditSurveyPage(props) {
 
         setTitle(res.title);
         setDescription(res.description);
+        setSurveyID(res.surveyID);
 
         if (res.error && res.error !== '') {
           console.log(message);
@@ -95,46 +116,96 @@ function EditSurveyPage(props) {
     }
   };
 
-  const handleToggle = () => {
-    setIsCreating((isCreating) => !isCreating);
-  };
+  const add_participants = async (event) => {
+    console.log('question: ' + question);
+    console.log('type: ' + type);
+    //IN - part_emails, surveyID OR (userID (creator's) and title)
 
-  const question_list = async (event) => {
     try {
-      //IN - title, userName
-
       const obj = {
-        title: props.title,
-        userName: user_data.userName,
+        part_emails: partList,
+        surveyID: surveyID,
       };
 
       var js = JSON.stringify(obj);
 
-      const response = await fetch('http://localhost:5000/get_question_list', {
+      const response = await fetch('http://localhost:5000/add_participants', {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
       });
-
       let res = JSON.parse(await response.text());
       console.log(res);
 
       if (res.error && res.error !== '') {
         console.log(message);
-        setMessage(message);
+        setMessage('');
       } else {
         setMessage('');
-        setQuestionList(res.info);
-        console.log(questionList);
+        console.log(message);
+        setPartList([]);
       }
     } catch (e) {
       alert(e.toString());
     }
   };
 
-  const handleQuestion = (e) => {
-    setQuestion(e.target.value);
+  const handleToggle = () => {
+    setIsCreating((isCreating) => !isCreating);
   };
+
+  useEffect(() => {
+    const question_list = async (event) => {
+      try {
+        //IN - title, userName
+
+        const obj = {
+          title: props.title,
+          userName: user_data.userName,
+        };
+
+        var js = JSON.stringify(obj);
+
+        const response = await fetch(
+          'http://localhost:5000/get_question_list',
+          {
+            method: 'POST',
+            body: js,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+
+        let res = JSON.parse(await response.text());
+        console.log(res);
+
+        if (res.error && res.error !== '') {
+          console.log(message);
+          setMessage(message);
+        } else {
+          setMessage('');
+          setQuestionList(res.info);
+          console.log(questionList);
+        }
+      } catch (e) {
+        alert(e.toString());
+      }
+    };
+    question_list();
+  });
+
+  function handleQuestion(e) {
+    setQuestion(e.target.value);
+  }
+
+  function handleChange(event) {
+    setPart(event.target.value);
+  }
+
+  function handleAdd() {
+    const newList = partList.concat(part);
+    setPartList(newList);
+    setPart('');
+  }
 
   return (
     <>
@@ -213,15 +284,58 @@ function EditSurveyPage(props) {
         ) : (
           ''
         )}
-        <Button
-          variant="dark"
-          className="w-75 mb-4"
-          onClick={() => {
-            question_list();
-          }}
-        >
-          Add
-        </Button>
+
+        <ul className="list-group">
+          {questionList.map((data) => (
+            <li
+              className="list-group-item"
+              key={data.id}
+            >
+              <p>question:{data.question}</p>
+              <p>type: {data.type}</p>
+            </li>
+          ))}
+        </ul>
+        <h3>Participants:</h3>
+        <input
+          type="text"
+          value={part}
+          className="mb-3"
+          onChange={handleChange}
+        />
+        <div className="d-flex justify-content-between">
+          <Button
+            variant="dark"
+            className="w-50 mb-4"
+            onClick={() => {
+              handleAdd();
+            }}
+          >
+            Add
+          </Button>
+          <Button
+            variant="dark"
+            className="w-50 mb-4"
+            onClick={() => {
+              console.log(partList);
+              add_participants();
+            }}
+          >
+            Submit List
+          </Button>
+        </div>
+
+        <h4>Email List:</h4>
+        <ul stlye={{ margin: '0px', padding: '0' }}>
+          {partList.map((item, index) => (
+            <div
+              className="participant"
+              key={index}
+            >
+              {item}
+            </div>
+          ))}
+        </ul>
       </div>
     </>
   );
