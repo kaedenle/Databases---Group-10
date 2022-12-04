@@ -25,6 +25,7 @@ function CreateSurvey() {
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
   console.log(localStorage.getItem('user_data'));
+
   const createSurvey = async (event) => {
     try {
       //IN - title, (userID or userName), description (optional),
@@ -37,6 +38,7 @@ function CreateSurvey() {
         description: description,
         period_start: start,
         period_end: end,
+        active: false,
       };
 
       var js = JSON.stringify(obj);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Bootstrap
 import Button from 'react-bootstrap/esm/Button';
@@ -10,17 +10,9 @@ function QuestionContainer({ onTaskFormSubmit }) {
   const [question, setQuestion] = useState('');
   const [type, setType] = useState(1);
 
-  function handleSubmit(e) {
-    console.log(question + ' ' + type);
-    e.preventDefault();
-    onTaskFormSubmit(question, type); // call the prop callback
-    setType(1);
-    setQuestion(''); // reset the input field so it's blank
-  }
-
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <Form.Group>
           <Form.Control
             placeholder="Question"
@@ -56,7 +48,6 @@ function QuestionContainer({ onTaskFormSubmit }) {
             />
           </div>
         ))}
-        <Button onClick={handleSubmit}>Add</Button>
       </Form>
     </>
   );

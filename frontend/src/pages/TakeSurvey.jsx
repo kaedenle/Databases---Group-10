@@ -1,14 +1,16 @@
 import React from 'react';
 
 import Sidebar from '../components/Sidebar';
+import Survey from '../components/Survey';
 
 function TakeSurvey() {
   return (
     <>
-      <Sidebar />
-      <div className="survey">
-        {' '}
-        <p>Hello</p>
+      <div>
+        <Sidebar />
+        <div className="survey">
+          <Survey />
+        </div>
       </div>
     </>
   );

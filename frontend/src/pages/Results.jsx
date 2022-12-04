@@ -2,13 +2,16 @@ import React from 'react';
 
 //custom imports
 import Sidebar from '../components/Sidebar';
+import Survey from '../components/Survey';
 
 function Results() {
   return (
     <>
-      <Sidebar />
-      <div className="results">
-        <h1>Hello</h1>
+      <div>
+        <Sidebar />
+        <div className="survey">
+          <Survey />
+        </div>
       </div>
     </>
   );

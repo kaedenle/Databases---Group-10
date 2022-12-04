@@ -6,7 +6,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/esm/Button';
 
 import thumbnail from '../assets/survey-thumbnail.png';
-import QuestionContainer from './QuestionContainer';
 import Question from './Question';
 
 function EditSurveyPage(props) {
@@ -59,7 +58,7 @@ function EditSurveyPage(props) {
     };
 
     getSurvey();
-  }, [title, description, start, end]);
+  }, [title]);
 
   const create_question = async (event) => {
     //IN - (userName AND title) OR surveyID, question, type
@@ -90,7 +89,6 @@ function EditSurveyPage(props) {
       } else {
         setMessage('');
         console.log(message);
-        handleToggle();
       }
     } catch (e) {
       alert(e.toString());
@@ -100,11 +98,6 @@ function EditSurveyPage(props) {
   const handleToggle = () => {
     setIsCreating((isCreating) => !isCreating);
   };
-
-  function handleAddTask(newquestion, newtype) {
-    setQuestion(newquestion);
-    setType(newtype);
-  }
 
   const question_list = async (event) => {
     try {
@@ -131,13 +124,16 @@ function EditSurveyPage(props) {
         setMessage(message);
       } else {
         setMessage('');
-        console.log(res);
-        setQuestionList(questionList);
-        console.log('questions: ' + questionList);
+        setQuestionList(res.info);
+        console.log(questionList);
       }
     } catch (e) {
       alert(e.toString());
     }
+  };
+
+  const handleQuestion = (e) => {
+    setQuestion(e.target.value);
   };
 
   return (
@@ -152,39 +148,80 @@ function EditSurveyPage(props) {
         <h2>Description:</h2>
         <p> {description}</p>
         <h3>Questions:</h3>
+        {!isCreating ? (
+          <Button
+            variant="dark"
+            className="w-75 mb-4"
+            onClick={() => {
+              handleToggle();
+            }}
+          >
+            +
+          </Button>
+        ) : (
+          <Button
+            variant="dark"
+            className="w-75 mb-4"
+            onClick={() => {
+              create_question();
+              handleToggle();
+            }}
+          >
+            Add
+          </Button>
+        )}
+
+        {/* Adding questions component */}
+        {isCreating ? (
+          <>
+            <Form>
+              <Form.Group>
+                <Form.Control
+                  placeholder="Question"
+                  as="textarea"
+                  rows={3}
+                  className="w-75"
+                  onChange={handleQuestion}
+                  required
+                ></Form.Control>
+              </Form.Group>
+              {['radio'].map((type) => (
+                <div
+                  key={`inline-${type}`}
+                  className="mb-3 w-75 d-flex justify-content-center"
+                >
+                  <Form.Check
+                    inline
+                    label="1-5 Rating"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-1`}
+                    onChange={() => setType(1)}
+                  />{' '}
+                  <Form.Check
+                    inline
+                    label="Text Input"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-2`}
+                    onChange={() => setType(2)}
+                  />
+                </div>
+              ))}
+            </Form>
+          </>
+        ) : (
+          ''
+        )}
         <Button
           variant="dark"
           className="w-75 mb-4"
           onClick={() => {
             question_list();
-            handleToggle();
           }}
         >
-          +
+          Add
         </Button>
-
-        {isCreating ? (
-          <QuestionContainer onTaskFormSubmit={handleAddTask} />
-        ) : (
-          ''
-        )}
-        {isCreating ? (
-          <div className="mb-3 w-75 d-flex justify-content-center">
-            <Button
-              variant="dark"
-              size="md"
-              className="w-75"
-              onClick={() => {
-                create_question();
-              }}
-            >
-              Add
-            </Button>
-          </div>
-        ) : (
-          ''
-        )}
-        <Question />
       </div>
     </>
   );
