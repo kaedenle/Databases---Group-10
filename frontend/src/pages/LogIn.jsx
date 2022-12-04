@@ -77,7 +77,6 @@ function RightHomeSection(navigation) {
 
       if (res.error && res.error !== '') {
         console.log(message);
-        console.log('help');
       } else {
         setMessage('');
         navigate('/Home');
@@ -87,6 +86,7 @@ function RightHomeSection(navigation) {
           password: password,
         };
         localStorage.setItem('user_data', JSON.stringify(user));
+        console.log(localStorage.getItem('user_data'));
       }
     } catch (e) {
       alert(e.toString());

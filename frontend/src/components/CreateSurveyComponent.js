@@ -24,7 +24,7 @@ function CreateSurvey() {
   const handleShow = () => setmodalShow(true);
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
-
+  console.log(localStorage.getItem('user_data'));
   const createSurvey = async (event) => {
     try {
       //IN - title, (userID or userName), description (optional),

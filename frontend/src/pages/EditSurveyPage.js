@@ -7,11 +7,11 @@ function EditSurveyPage() {
 
   return (
     <>
-      <Sidebar />
-      <div style={{ marginLeft: '250px' }}>
-        <EditComponent title={location.state.title} />
-        <p>hello</p>
-        <p></p>
+      <div>
+        <Sidebar />
+        <div className="edit">
+          <EditComponent title={location.state.title} />
+        </div>
       </div>
     </>
   );
