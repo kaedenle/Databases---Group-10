@@ -8,9 +8,7 @@ function TakeSurvey() {
     <>
       <div>
         <Sidebar />
-        <div className="survey">
-          <Survey />
-        </div>
+        <div className="survey"></div>
       </div>
     </>
   );

@@ -8,7 +8,6 @@ import Modal from 'react-bootstrap/Modal';
 import '../css/create.scss';
 
 import thumbnail from '../assets/survey-thumbnail.png';
-import QuestionContainer from './QuestionContainer';
 import CreatedModal from './CreatedModal';
 
 function CreateSurvey() {
@@ -38,7 +37,6 @@ function CreateSurvey() {
         description: description,
         period_start: start,
         period_end: end,
-        active: false,
       };
 
       var js = JSON.stringify(obj);

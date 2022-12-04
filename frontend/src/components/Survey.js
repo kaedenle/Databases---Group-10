@@ -1,59 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Button from 'react-bootstrap/Button';
+import { useParams, Link } from 'react-router-dom';
 
 import '../css/Survey.scss';
+import Sidebar from './Sidebar';
 
 function Survey() {
-  const [message, setMessage] = useState();
-  const [surveyList, setSurveyList] = useState();
+  const [message, setMessage] = useState('');
+  const [questionList, setquestionList] = useState([]);
+  const { id } = useParams();
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
   console.log(localStorage.getItem('user_data'));
 
-  const get_surveys = async (event) => {
-    try {
-      //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
+  useEffect(() => {
+    const getSurvey = async (event) => {
+      try {
+        //IN - title, userName
 
-      const obj = {
-        userName: user_data.userName,
-        page: 1,
-      };
+        const obj = {
+          title: id,
+          userName: user_data.userName,
+        };
 
-      var js = JSON.stringify(obj);
+        var js = JSON.stringify(obj);
 
-      const response = await fetch('http://localhost:5000/list_user_survey', {
-        method: 'POST',
-        body: js,
-        headers: { 'Content-Type': 'application/json' },
-      });
+        const response = await fetch('http://localhost:5000/get_survey', {
+          method: 'POST',
+          body: js,
+          headers: { 'Content-Type': 'application/json' },
+        });
 
-      let res = JSON.parse(await response.text());
-      console.log(res);
+        let res = JSON.parse(await response.text());
+        console.log(res);
 
-      if (res.error && res.error !== '') {
-        console.log(message);
-        setMessage(message);
-      } else {
-        setMessage('');
-        setSurveyList(res);
-        console.log(surveyList);
+        if (res.error && res.error !== '') {
+          console.log(message);
+          setMessage(message);
+        } else {
+          setMessage('');
+          console.log(res);
+        }
+      } catch (e) {
+        alert(e.toString());
       }
-    } catch (e) {
-      alert(e.toString());
-    }
-  };
+    };
+    getSurvey();
+  }, []);
 
   return (
-    <div className="container">
-      <p className="m-4">hello</p>
-      <Button
-        variant="dark"
-        onClick={get_surveys}
-      >
-        {' '}
-        Hello
-      </Button>
+    <div>
+      <Sidebar />
+      <div className="edit">
+        <p className="m-4">hello</p>
+        <Link
+          to=".."
+          relative="path"
+        >
+          Cancel
+        </Link>
+        <div>
+          <h2>Now showing post {id}</h2>
+        </div>
+      </div>
     </div>
   );
 }
