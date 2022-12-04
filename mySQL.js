@@ -24,7 +24,7 @@ async function main(){
   //await connection.query("INSERT INTO Person (PersonID, Name) VALUES (?, (?));", int);
   try
   {
-    await connection.query("DELETE FROM Can_access WHERE surveyID = '596e8d77-6ac1-11ed-91a4-62bd4a1ad21b'");
+    //await connection.query("DELETE FROM Can_access WHERE surveyID = '596e8d77-6ac1-11ed-91a4-62bd4a1ad21b'");
   }
   catch(e)
   {
@@ -40,7 +40,7 @@ async function main(){
   //var [results] = await connection.query(sql, ["b0c79de6-6a27-11ed-91a4-62bd4a1ad21b"])
   //var obj = {userName: "Tarova"}
   var news = [["Kaeden", "Tarova"]]
-  var [results] = await connection.query("SELECT * FROM Can_access")
+  var [results] = await connection.query("SELECT * FROM Surveys WHERE creatorID = '89d25f30-72c6-11ed-acb4-0d267265dd30'")
   //var inp = ["'kaeden' OR Name = 'carl';"];
   //var [results] = await connection.query("SELECT * FROM new WHERE Name = ?", inp);
   console.log(results);

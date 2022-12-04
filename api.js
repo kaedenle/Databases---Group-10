@@ -240,7 +240,7 @@ exports.setApp = function ( app, client )
 //----------LIST USER SURVEY----------
     //get list of surveys user has created
     app.post('/list_user_survey', filter_questionID, filter_surveyID, get_user, async (req, res, next) => {
-        //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
+        //IN - userName, page (optional = 0), per_page (optional = 10)
 
         var sql = 'SELECT * FROM Surveys WHERE creatorID = ?';
         //default values
@@ -251,10 +251,6 @@ exports.setApp = function ( app, client )
         var per_page = req.body.per_page
         if(!per_page)
             per_page = 10
-
-        var active = req.body.active;
-        if(active == null || active === true)
-            sql += ' AND active = 1';
 
         sql += ' LIMIT ?, ?';
 
