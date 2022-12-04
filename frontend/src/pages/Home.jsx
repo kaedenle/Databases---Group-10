@@ -51,7 +51,7 @@ function Home() {
                 alt="survey thumbnail"
               />
             </Col>
-            <Col style={{ marginTop: '20px' }}>
+            <Col>
               <h3>Survey Title</h3>
               <p> This will be the description of the survey</p>
             </Col>
