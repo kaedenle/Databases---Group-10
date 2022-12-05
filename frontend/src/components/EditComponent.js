@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { format } from 'date-fns';
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';

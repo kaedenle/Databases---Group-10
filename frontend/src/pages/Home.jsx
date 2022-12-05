@@ -39,7 +39,7 @@ function Home() {
         );
 
         let res = JSON.parse(await response.text());
-        console.log(res);
+        //console.log(res);
 
         if (res.error && res.error !== '') {
           console.log(message);

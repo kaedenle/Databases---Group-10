@@ -22,38 +22,7 @@ function Survey() {
   var user_data = JSON.parse(localStorage.getItem('user_data'));
 
   useEffect(() => {
-    const getSurvey = async (event) => {
-      try {
-        //IN - title, userName or surveyID
-
-        const obj = {
-          surveyID: id,
-        };
-
-        var js = JSON.stringify(obj);
-
-        const response = await fetch('http://localhost:5000/get_survey', {
-          method: 'POST',
-          body: js,
-          headers: { 'Content-Type': 'application/json' },
-        });
-
-        let res = JSON.parse(await response.text());
-        console.log(res);
-
-        if (res.error && res.error !== '') {
-          console.log(message);
-          setMessage(message);
-        } else {
-          setMessage('');
-          console.log(res);
-          setTitle(res.title);
-        }
-      } catch (e) {
-        alert(e.toString());
-      }
-    };
-    getSurvey();
+    question_list();
   }, [title]);
 
   //   useEffect(() => {
@@ -62,8 +31,7 @@ function Survey() {
       //IN - title, userName
 
       const obj = {
-        title: title,
-        userName: user_data.userName,
+        surveyID: id,
       };
 
       var js = JSON.stringify(obj);
@@ -113,7 +81,7 @@ function Survey() {
                     <p>{data.question}</p>
                     {data.type === 1 ? (
                       <div>
-                        <Form>
+                        <Form id={`group ${index}`}>
                           {['radio'].map((type) => (
                             <div
                               key={`inline-${type}`}

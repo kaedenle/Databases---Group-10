@@ -583,16 +583,20 @@ exports.setApp = function ( app, client )
 //----------ANSWER----------
     app.post('/answer', get_user, get_survey, get_question, async (req, res, next) =>
     {
-        //IN - questionID OR (question AND survey), takerID or takerName, answer, complete
+        //IN - questionID OR (question AND survey), takerID or takerName, answer
         var type = res.locals.question.type;
         //error messages (field validation)
-        if(!req.body.answer || (!req.body.takerID && !req.body.takerName) || !req.body.complete)
+        if((!req.body.takerID && typeof req.body.takerName === 'undefined'))
         {
             var ret = {error: "ERROR: Empty field(s)"} 
             res.status(200).json(ret);
             return
         }
 
+        let complete = 1;
+        if(typeof req.body.answer === 'undefined')
+            complete = 0;
+            
         //get taker's ID from name if applicable
         var takerID = req.body.takerID;
         var [result_name] = [];
@@ -608,7 +612,7 @@ exports.setApp = function ( app, client )
             sql = "Type1_answers"
         else if(type == 2)
             sql = "Type2_answers"
-        var query = "SELECT 1 FROM " + sql + " WHERE userID = ?"
+        //var query = "SELECT 1 FROM " + sql + " WHERE userID = ?"
 
         //get surveyID from questionID if doesn't exist
         if(!req.body.surveyID)
@@ -617,14 +621,14 @@ exports.setApp = function ( app, client )
             req.body.surveyID = result_name[0].surveyID
         }
 
-        //if user has already answered question, update
+        //if user has already answered question, update instead of insert
         [result_name] = await client.query("SELECT 1 FROM " + sql + " WHERE userID = ?", [takerID]);
         var flag = false;
         if(result_name.length > 0)
         {
             try
             {
-                await client.query("UPDATE " + sql + " SET answer = ? WHERE userID = ? AND questionID = ?", [req.body.answer, takerID, req.body.questionID])
+                await client.query("UPDATE " + sql + " SET answer = ?, complete = ? WHERE userID = ? AND questionID = ?", [req.body.answer, complete, takerID, req.body.questionID])
             }
             catch(e)
             {
@@ -636,7 +640,7 @@ exports.setApp = function ( app, client )
         //insert new answer
         else
         {
-            var search = [takerID, req.body.surveyID, req.body.questionID, req.body.answer, req.body.complete];
+            var search = [takerID, req.body.surveyID, req.body.questionID, req.body.answer, complete];
             try
             {
                 await client.query("INSERT INTO "+ sql +" (userID, surveyID, questionID, answer, complete) VALUES (?, ?, ?, ?, ?);", search);
