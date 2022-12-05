@@ -17,7 +17,7 @@ function Results() {
   useEffect(() => {
     const get_surveys = async (event) => {
       try {
-        //IN - userName, page (optional = 0), per_page (optional = 10)
+        //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
 
         const obj = {
           userName: user_data.userName,

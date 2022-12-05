@@ -4,7 +4,24 @@
     margin-left: 250px;
     flex-direction: column;
     font-family: 'Solway', serif;
+
 }
+.survey-title{
+    background-color: #1F1541 ;
+    width: 70vw;
+    height: 12vh;
+    border-radius: 20px 20px 0px 0px;
+    color: white;
+
+}
+.survey-display-container{
+   background-color: #d4d4d4;
+   width: 70vw;
+   height: 80vh;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   border-radius: 20px;
+}
+
 
 .survey-link{
     font-size: 30px;

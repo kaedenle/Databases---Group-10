@@ -25,7 +25,6 @@ function Home() {
 
         const obj = {
           userName: user_data.userName,
-          page: 1,
         };
 
         var js = JSON.stringify(obj);
@@ -48,7 +47,6 @@ function Home() {
         } else {
           setMessage('');
           setSurveyList(res.info);
-          console.log(surveyList);
         }
       } catch (e) {
         alert(e.toString());
@@ -62,7 +60,7 @@ function Home() {
         <Sidebar />
       </div>
       <div className="home">
-        <h1 className="home-title"> Active Title</h1>
+        <h1 className="home-title"> Participate</h1>
         <hr className="header" />
         <Container fluid>
           {/* This is where You will adjust to make it dynamic and add data of survey

@@ -13,9 +13,6 @@ import EditSurveyPage from './pages/EditSurveyPage';
 import Survey from './components/Survey';
 import SurveyDisplay from './components/SurveyDisplay';
 
-//Custom Components
-import Sidebar from './components/Sidebar';
-
 function App() {
   return (
     <>
