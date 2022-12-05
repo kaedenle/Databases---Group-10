@@ -1,6 +1,6 @@
 import '../App.css';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 
 //Bootstrap imports
@@ -11,6 +11,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 // custom components
+import LeftHomeSection from '../components/LeftHomeSection';
 
 function Register() {
   return (
@@ -29,25 +30,6 @@ function Register() {
         </Row>
       </Container>
     </>
-  );
-}
-
-function LeftHomeSection() {
-  return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
-      <h1 className="text-center">Survey</h1>
-      <p className="text-center">
-        Hello This is the left section of the page.
-        <br /> This will be a brief description of the survey website.
-        <br />
-        Section
-      </p>
-      <ul>
-        <li>Hello</li>
-        <li>Hello</li>
-        <li>Hello</li>
-      </ul>
-    </div>
   );
 }
 
@@ -96,15 +78,16 @@ function RightHomeSection(navigation) {
   return (
     <div>
       {/* Register User */}
-      <h1 className="startTitle">Let's Get Started</h1>
-      <p className="d-flex justify-content-center">
-        Don't have an account?
-        <Button
+      <h1 className="text-center m-4 text-white">Let's Get Started</h1>
+      <p className="d-flex justify-content-center text-white">
+        Don't have an Account?<span> </span>
+        <Link
           variant="link"
-          onClick={() => navigate('/')}
+          to="/"
+          className="account-link"
         >
           Click Here
-        </Button>
+        </Link>
       </p>
       <div className="d-flex justify-content-center">
         <Form>
@@ -120,6 +103,7 @@ function RightHomeSection(navigation) {
             <Form.Control
               size="1x"
               type="text"
+              className="custom-form"
               placeholder="Username"
               onChange={(e) => {
                 e.preventDefault();
@@ -133,6 +117,7 @@ function RightHomeSection(navigation) {
           >
             <Form.Label>Password</Form.Label>
             <Form.Control
+              className="custom-form"
               size="1x"
               type="password"
               placeholder="Password"
@@ -143,8 +128,9 @@ function RightHomeSection(navigation) {
             />
           </Form.Group>
           <Button
-            variant="primary"
+            variant="dark"
             type="button"
+            className="d-flex mx-auto"
             onClick={() => {
               doLogin();
             }}

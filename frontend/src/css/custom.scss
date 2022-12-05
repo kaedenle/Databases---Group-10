@@ -1,5 +1,7 @@
 // Font import
 @import url('https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 // Bootstrap import
 @import 'bootstrap/scss/bootstrap.scss';
 
@@ -31,7 +33,8 @@ $theme-colors: (
 }
 
 body{
-    font-family:'Sawarabi Mincho', serif ;
+    font-family: 'Anton', sans-serif;
+
 }
 
 .form-control-1x{
@@ -45,11 +48,18 @@ body{
 .account-link{ 
     color: white;
 }
+.custom-form{
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
 
 .account-link:hover{
     color: blue;
 }
 
+.custom-li{
+    font-family: 'Anton';
+    font-size: 30px;
+}
 
 @import './create.scss';
 @import './editPage.scss';

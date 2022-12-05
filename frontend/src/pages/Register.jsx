@@ -1,4 +1,5 @@
 import '../App.css';
+import '../css/custom.scss';
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -11,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import surveyImg from '../assets/surveyImg.png';
+import LeftHomeSection from '../components/LeftHomeSection';
 
 function Register() {
   return (
@@ -27,29 +29,6 @@ function Register() {
         </Col>
       </Row>
     </Container>
-  );
-}
-
-function LeftHomeSection() {
-  return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
-      <h1 className="text-center mt-5 mb-4">Survey Studies</h1>
-
-      <p className="text-center">
-        Hello! Love taking studies, need to create one?
-        <br /> This is the place for you!
-      </p>
-      <img
-        src={surveyImg}
-        className="w-50"
-        alt="Survey cartoon"
-      />
-      <ul style={{ listStyle: 'none', fontSize: '20px' }}>
-        <li>Create</li>
-        <li>Take</li>
-        <li>Results</li>
-      </ul>
-    </div>
   );
 }
 
@@ -104,7 +83,7 @@ function RightHomeSection({ navigation }) {
   return (
     <div>
       {/* Register User */}
-      <h1 className="text-center m-3 text-white">Let's Get Started</h1>
+      <h1 className="text-center m-4 text-white">Let's Get Started</h1>
       <p className="d-flex justify-content-center text-white">
         Already have an Account?<span> </span>
         <Link
@@ -124,6 +103,7 @@ function RightHomeSection({ navigation }) {
             <Form.Label>First Name</Form.Label>
             <Form.Control
               size="1x"
+              className="custom-form"
               type="text"
               placeholder="First Name"
               onChange={(e) => {
@@ -140,6 +120,7 @@ function RightHomeSection({ navigation }) {
             <Form.Control
               size="1x"
               type="text"
+              className="custom-form"
               placeholder="Last Name"
               onChange={(e) => {
                 e.preventDefault();
@@ -155,6 +136,7 @@ function RightHomeSection({ navigation }) {
             <Form.Control
               size="1x"
               type="text"
+              className="custom-form"
               placeholder="Username"
               onChange={(e) => {
                 e.preventDefault();
@@ -170,6 +152,7 @@ function RightHomeSection({ navigation }) {
             <Form.Control
               size="1x"
               type="email"
+              className="custom-form"
               placeholder="Enter email"
               onChange={(e) => {
                 e.preventDefault();
@@ -185,6 +168,7 @@ function RightHomeSection({ navigation }) {
             <Form.Control
               size="1x"
               type="password"
+              className="custom-form"
               placeholder="Password"
               onChange={(e) => {
                 e.preventDefault();
@@ -193,8 +177,9 @@ function RightHomeSection({ navigation }) {
             />
           </Form.Group>
           <Button
-            variant="primary"
+            variant="dark"
             type="button"
+            className="d-flex justify-content-center mx-auto"
             onClick={() => {
               register();
             }}
