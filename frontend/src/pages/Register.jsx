@@ -1,6 +1,6 @@
 import '../App.css';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 
 //Bootstrap imports
@@ -9,6 +9,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+
+import surveyImg from '../assets/surveyImg.png';
 
 function Register() {
   return (
@@ -31,17 +33,21 @@ function Register() {
 function LeftHomeSection() {
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
-      <h1 className="text-center">Survey</h1>
+      <h1 className="text-center mt-5 mb-4">Survey Studies</h1>
+
       <p className="text-center">
-        Hello This is the left section of the page.
-        <br /> This will be a brief description of the survey website.
-        <br />
-        Section
+        Hello! Love taking studies, need to create one?
+        <br /> This is the place for you!
       </p>
-      <ul>
-        <li>Hello</li>
-        <li>Hello</li>
-        <li>Hello</li>
+      <img
+        src={surveyImg}
+        className="w-50"
+        alt="Survey cartoon"
+      />
+      <ul style={{ listStyle: 'none', fontSize: '20px' }}>
+        <li>Create</li>
+        <li>Take</li>
+        <li>Results</li>
       </ul>
     </div>
   );
@@ -98,15 +104,16 @@ function RightHomeSection({ navigation }) {
   return (
     <div>
       {/* Register User */}
-      <h1 className="startTitle">Let's Get Started</h1>
-      <p className="d-flex justify-content-center">
-        Already have an Account?
-        <Button
+      <h1 className="text-center m-3 text-white">Let's Get Started</h1>
+      <p className="d-flex justify-content-center text-white">
+        Already have an Account?<span> </span>
+        <Link
           variant="link"
-          onClick={() => navigate('/LogIn')}
+          to="/Login"
+          className="account-link"
         >
           Click Here
-        </Button>
+        </Link>
       </p>
       <div className="d-flex justify-content-center">
         <Form>

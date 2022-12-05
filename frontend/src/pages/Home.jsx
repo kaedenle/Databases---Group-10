@@ -82,7 +82,7 @@ function Home() {
                   />
                 </Col>
                 <Col style={{ marginTop: '20px' }}>
-                  <Link to={`/TakeSurvey/${data.title}`}>{data.title}</Link>
+                  <Link to={`/TakeSurvey/${data.surveyID}`}>{data.title}</Link>
                   <p>{data.description}</p>
                 </Col>
               </Row>

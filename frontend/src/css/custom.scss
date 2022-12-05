@@ -30,12 +30,6 @@ $theme-colors: (
     
 }
 
-.startTitle{
-    text-align: center;
-    margin: 40px auto;
-    color: white
-}
-
 body{
     font-family:'Sawarabi Mincho', serif ;
 }
@@ -46,6 +40,14 @@ body{
 
 .form-label{
     color: white;
+}
+
+.account-link{ 
+    color: white;
+}
+
+.account-link:hover{
+    color: blue;
 }
 
 

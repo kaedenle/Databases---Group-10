@@ -31,7 +31,7 @@ function App() {
             element={<TakeSurvey />}
           />
           <Route
-            path="/TakeSurvey/:name"
+            path="/TakeSurvey/:id"
             element={<SurveyDisplay />}
           />
           <Route
