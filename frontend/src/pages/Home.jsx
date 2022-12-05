@@ -53,7 +53,7 @@ function Home() {
       }
     };
     get_participant_surveys();
-  }, [surveyList]);
+  }, [surveyList, message]);
   return (
     <>
       <div>

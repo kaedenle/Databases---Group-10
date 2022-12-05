@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Button from 'react-bootstrap/Button';
 import { useParams, Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 
 import '../css/Survey.scss';
 import Sidebar from './Sidebar';
@@ -11,6 +12,10 @@ function Survey() {
   const [surveyList, setSurveyList] = useState([]);
   const [questionList, setQuestionList] = useState([]);
   const { name } = useParams();
+  const [count, setCount] = useState(0);
+  var answer1;
+  var answer2;
+  var answer3;
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
 
@@ -84,10 +89,10 @@ function Survey() {
     question_list();
   }
 
-  function typeOne() {
-    return <div> Hello</div>;
-  }
-
+  const handleClick = (num) => {
+    // 👇️ take parameter passed from Child component
+    setCount((current) => current + num);
+  };
   return (
     <div>
       <Sidebar />
@@ -98,13 +103,65 @@ function Survey() {
               <h2 className="text-center p-4 survey-title">{name}</h2>
               <Button onClick={handleQuestions}>Hello</Button>
               <ol className="ordered">
-                {questionList.map((data) => (
-                  <li key={data.id}>
+                {questionList.map((data, index) => (
+                  <li key={index}>
                     <p>{data.question}</p>
                     {data.type === 1 ? (
-                      <p>
-                        <typeOne />
-                      </p>
+                      <div>
+                        <Form>
+                          {['radio'].map((type) => (
+                            <div
+                              key={`inline-${type}`}
+                              className="mb-3"
+                            >
+                              <span style={{ marginRight: ' 30px' }}>
+                                Strongly Disagree{' '}
+                              </span>
+                              <Form.Check
+                                inline
+                                label="1"
+                                name="group1"
+                                type={type}
+                                id={`inline-${type}-1`}
+                                onClick={(index = 1)}
+                              />
+                              <Form.Check
+                                inline
+                                label="2"
+                                name="group1"
+                                type={type}
+                                id={`inline-${type}-2`}
+                                onClick={(answer1 = 1)}
+                              />
+                              <Form.Check
+                                inline
+                                label="3"
+                                name="group1"
+                                type={type}
+                                id={`inline-${type}-3`}
+                                onClick={(answer1 = 1)}
+                              />
+                              <Form.Check
+                                inline
+                                label="4"
+                                name="group1"
+                                type={type}
+                                id={`inline-${type}-4`}
+                                onClick={(answer1 = 1)}
+                              />
+                              <Form.Check
+                                inline
+                                label="5"
+                                name="group1"
+                                type={type}
+                                id={`inline-${type}-5`}
+                                onClick={(answer1 = 1)}
+                              />
+                              <span>Strongly Agree</span>
+                            </div>
+                          ))}
+                        </Form>
+                      </div>
                     ) : (
                       <p>Goodbye</p>
                     )}
