@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Button from 'react-bootstrap/Button';
 import { useParams, Link } from 'react-router-dom';
@@ -8,16 +8,15 @@ import '../css/Survey.scss';
 import Sidebar from './Sidebar';
 
 function Survey() {
+  const answers = useRef([]);
   const [message, setMessage] = useState('');
+  const [description, setDescription] = useState('');
   const [surveyList, setSurveyList] = useState([]);
   const [questionList, setQuestionList] = useState([]);
   const { id } = useParams();
   const [count, setCount] = useState(0);
-  const [title, setTitle] = useState('');
-  var answer1;
-  var answer2;
-  var answer3;
-  console.log(id);
+  const [title, setTitle] = useState('Survey Title');
+  //console.log(id);
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
 
@@ -43,7 +42,7 @@ function Survey() {
       });
 
       let res = JSON.parse(await response.text());
-      console.log(res);
+      //console.log(res);
 
       if (res.error && res.error !== '') {
         console.log(message);
@@ -51,15 +50,82 @@ function Survey() {
       } else {
         setMessage('');
         setQuestionList(res.info);
-        console.log(questionList);
+        //console.log(questionList);
+        answers.current = answers.current.slice(0, res.info.length);
       }
     } catch (e) {
       alert(e.toString());
     }
   };
   //   }, []);
-  function handleQuestions() {
-    question_list();
+
+  async function handleQuestions() {
+    if(!questionList)
+      return
+    for(let i = 0; i < questionList.length; i++){
+      //set questionID and answer
+      let questionID = questionList[i].questionID
+      let answer;
+      if(answers.current[i])
+        answer = answers.current[i].target.value;
+      console.log(questionID + " " + answer)
+      try {
+        //IN - questionID, takerID, answer (optional)
+        const obj = {
+          takerName: user_data.userName,
+          questionID: questionID,
+          answer: answer
+        };
+  
+        var js = JSON.stringify(obj);
+  
+        const response = await fetch('http://localhost:5000/answer', {
+          method: 'POST',
+          body: js,
+          headers: { 'Content-Type': 'application/json' },
+        });
+  
+        let res = JSON.parse(await response.text());
+        console.log(res);
+  
+        if (res.error && res.error !== '') {
+          console.log(res.error);
+          setMessage(res.error);
+        } else {
+          setMessage('');
+        }
+      }
+      catch (e) {
+        alert(e.toString());
+      }
+    }
+  };
+
+  const handleText = (text) => {
+    const wordLimit = 200;
+    const regEx = /\s+$/;
+    let words = text.split(' ').filter(Boolean);
+
+    if(words.length == wordLimit){
+      //if space at end
+      if(regEx.test(text)){
+        //message that max count is 200 words goes here
+        return
+      }
+      else{
+        setDescription(words.slice(0, wordLimit).join(' '))
+      }
+    }
+    if(words.length > wordLimit){
+      //if backspaced on word
+      if(description.length > text.length)
+        setDescription(words.slice(0, wordLimit).join(' '))
+      else{
+        return
+      }
+    }
+    else
+      setDescription(text)
   }
 
   const handleClick = (num) => {
@@ -81,7 +147,7 @@ function Survey() {
                     <p>{data.question}</p>
                     {data.type === 1 ? (
                       <div>
-                        <Form id={`group ${index}`}>
+                        <Form>
                           {['radio'].map((type) => (
                             <div
                               key={`inline-${type}`}
@@ -93,42 +159,47 @@ function Survey() {
                               <Form.Check
                                 inline
                                 label="1"
+                                id={data.questionID}
                                 name="group1"
                                 type={type}
-                                id={`inline-${type}-1`}
-                                onClick={(index = 1)}
+                                value={1}
+                                onClick={el => answers.current[index] = el}
                               />
                               <Form.Check
                                 inline
                                 label="2"
+                                id={data.questionID}
                                 name="group1"
                                 type={type}
-                                id={`inline-${type}-2`}
-                                onClick={(answer1 = 1)}
+                                value={2}
+                                onClick={el => answers.current[index] = el}
                               />
                               <Form.Check
                                 inline
                                 label="3"
+                                id={data.questionID}
                                 name="group1"
                                 type={type}
-                                id={`inline-${type}-3`}
-                                onClick={(answer1 = 1)}
+                                value={3}
+                                onClick={el => answers.current[index] = el}
                               />
                               <Form.Check
                                 inline
                                 label="4"
+                                id={data.questionID}
                                 name="group1"
                                 type={type}
-                                id={`inline-${type}-4`}
-                                onClick={(answer1 = 1)}
+                                value={4}
+                                onClick={el => answers.current[index] = el}
                               />
                               <Form.Check
                                 inline
                                 label="5"
+                                id={data.questionID}
                                 name="group1"
                                 type={type}
-                                id={`inline-${type}-5`}
-                                onClick={(answer1 = 1)}
+                                value={5}
+                                onClick={el => answers.current[index] = el}
                               />
                               <span>Strongly Agree</span>
                             </div>
@@ -136,8 +207,27 @@ function Survey() {
                         </Form>
                       </div>
                     ) : (
-                      <p>Goodbye</p>
+                        <Form.Control
+                          id={data.questionID}
+                          placeholder="Response"
+                          as="textarea"
+                          rows={3}
+                          className="w-75"
+                          onChange={(e) => {
+                            e.preventDefault();
+                            //auto resize when text comes in
+                            e.target.style.height = 'inherit';
+                            e.target.style.height = `${e.target.scrollHeight}px`; 
+                            //keep under 200 words
+                            handleText(e.target.value, e)
+                            answers.current[index] = e
+                            answers.current[index].value = description
+                            //setDescription(e.target.value);
+                          }}
+                        ></Form.Control>
+                        
                     )}
+                    
                   </li>
                 ))}
               </ol>

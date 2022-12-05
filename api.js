@@ -233,7 +233,24 @@ exports.setApp = function ( app, client )
         //var serach = [title, userID]
         const [result] = await client.query('SELECT * FROM Questions WHERE surveyID = ?', search);
 
+        //get email list
+        var result_email;
+        try{
+             [result_email] = await client.query("SELECT email FROM Can_access WHERE surveyID = ?", [req.body.surveyID])
+        }
+        catch(e){
+            res.status(200).json({error:"ERROR " + e})
+            return;
+        }
+
+        //deload emails into array
+        let list = [];
+        for(let i = 0; i < result_email.length; i++){
+            list.push(result_email[i].email)
+        }
+
         var ret = res.locals.survey;
+        ret.emailList = list;
         ret.questions = result
         res.status(200).json(ret);
     });
@@ -360,7 +377,7 @@ exports.setApp = function ( app, client )
             period_end: req.body.period_end, active: active, surveyID: surveyID, currentTime: new Date(currentTime)};
         res.status(200).json(ret);
     });
-//----------LIST USER SURVEY----------
+//----------LIST PARTICIPANT SURVEY----------
     //get list of surveys user is participating in
     app.post('/list_participant_survey', filter_questionID, filter_surveyID, get_user, async (req, res, next) => {
         //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
@@ -403,7 +420,26 @@ exports.setApp = function ( app, client )
         var ret = {info: result};
         res.status(200).json(ret);
     });
-
+//----------LIST PARTICIPANTS----------
+    //get list of emails pariticpating in survey
+    app.post('/list_participants', filter_questionID, get_user, get_survey, async (req, res, next) => {
+        //IN - surveyID OR (title AND userName)
+        var result_ids;
+        try{
+             [result_ids] = await client.query("SELECT email FROM Can_access WHERE surveyID = ?", [req.body.surveyID])
+        }
+        catch(e){
+            res.status(200).json({error:"ERROR " + e})
+            return;
+        }
+        //deload emails into array
+        let list = [];
+        for(let i = 0; i < result_ids.length; i++){
+            list.push(result_ids[i].email)
+        }
+        var ret = {emailList: list}
+        res.status(200).json(ret)
+    });
 //----------ADD PARTICIPANTS----------
     //get list of surveys user has created
     app.post('/add_participants', filter_questionID, get_user, get_survey, async (req, res, next) => {
@@ -443,13 +479,20 @@ exports.setApp = function ( app, client )
         //get all users already participating in survey
         //difference of arrays
         //use resulting array
-        const [result] = await client.query('SELECT userID FROM Users WHERE email in (?)', [req.body.part_emails]);
-        console.log(result)
+        const [result] = await client.query('SELECT userID, email FROM Users WHERE email in (?)', [use_list]);
+        if(result.length == 0){
+            var ret = {error: "ERROR: considereed email(s) not registered with system"} 
+            res.status(200).json(ret);
+            return
+        }
         
-        var part_id = result[0].userID;
-        for(let i = 0; i < req.body.part_emails.length; i++){
+        let found_emails = [];
+        for(let i = 0; i < result.length; i++){
+            var part_id = result[i].userID;
+            found_emails.push(result[i].email);
+
             try{
-                await client.query("INSERT INTO Can_access (userID, email, surveyID) VALUES (?, ?, ?);", [part_id, req.body.part_emails[i], req.body.surveyID])  
+                await client.query("INSERT INTO Can_access (userID, email, surveyID) VALUES (?, ?, ?);", [part_id, result[i].email, req.body.surveyID]) 
             }
             catch(e){
                 var ret = {error: "ERROR: " + e}
@@ -459,7 +502,7 @@ exports.setApp = function ( app, client )
         }
         
         //use list is list of people added
-        var ret = {part_userID: part_id, part_email: use_list, surveyID: req.body.surveyID};
+        var ret = {part_userID: part_id, part_email: use_list, surveyID: req.body.surveyID, found_emails: found_emails};
         res.status(200).json(ret);
     });
 
@@ -594,8 +637,11 @@ exports.setApp = function ( app, client )
         }
 
         let complete = 1;
-        if(typeof req.body.answer === 'undefined')
+        if(typeof req.body.answer === 'undefined'){
             complete = 0;
+            req.body.answer = null
+        }
+            
             
         //get taker's ID from name if applicable
         var takerID = req.body.takerID;
@@ -622,7 +668,7 @@ exports.setApp = function ( app, client )
         }
 
         //if user has already answered question, update instead of insert
-        [result_name] = await client.query("SELECT 1 FROM " + sql + " WHERE userID = ?", [takerID]);
+        [result_name] = await client.query("SELECT 1 FROM " + sql + " WHERE userID = ? AND questionID = ?", [takerID, req.body.questionID]);
         var flag = false;
         if(result_name.length > 0)
         {
@@ -654,7 +700,7 @@ exports.setApp = function ( app, client )
             flag = true;
         }
 
-        var ret = {userID: takerID, surveyID: req.body.surveyID, questionID: req.body.questionID, answer: req.body.answer, complete: req.body.complete, new: flag};
+        var ret = {userID: takerID, surveyID: req.body.surveyID, questionID: req.body.questionID, answer: req.body.answer, complete: complete, new: flag};
         res.status(200).json(ret);
     });
 

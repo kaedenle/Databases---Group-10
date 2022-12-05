@@ -64,8 +64,7 @@ function RightHomeSection(navigation) {
         navigate('/Home');
 
         const user = {
-          userName: userName,
-          password: password,
+          userName: userName
         };
         localStorage.setItem('user_data', JSON.stringify(user));
         console.log(localStorage.getItem('user_data'));

@@ -71,6 +71,7 @@ function EditSurveyPage(props) {
         } else {
           setMessage('');
           console.log(res);
+          setPartList(res.emailList);
         }
       } catch (e) {
         alert(e.toString());
@@ -115,14 +116,14 @@ function EditSurveyPage(props) {
     }
   };
 
-  const add_participants = async (event) => {
+  const add_participants = async (email) => {
     console.log('question: ' + question);
     console.log('type: ' + type);
     //IN - part_emails, surveyID OR (userID (creator's) and title)
 
     try {
       const obj = {
-        part_emails: partList,
+        part_emails: [email],
         surveyID: surveyID,
       };
 
@@ -141,8 +142,8 @@ function EditSurveyPage(props) {
         setMessage('');
       } else {
         setMessage('');
-        console.log(message);
-        setPartList([]);
+        const newList = partList.concat(part);
+        setPartList(newList);
       }
     } catch (e) {
       alert(e.toString());
@@ -201,8 +202,10 @@ function EditSurveyPage(props) {
   }
 
   function handleAdd() {
-    const newList = partList.concat(part);
-    setPartList(newList);
+    if(part === '')
+      return
+    console.log("on it " + part)
+    add_participants(part)
     setPart('');
   }
 
@@ -316,8 +319,8 @@ function EditSurveyPage(props) {
             variant="dark"
             className="w-50 mb-4"
             onClick={() => {
-              console.log(partList);
-              add_participants();
+              /*console.log(partList);
+              add_participants();*/
             }}
           >
             Submit List
