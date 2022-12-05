@@ -24,7 +24,6 @@ function CreatedModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Centered Modal</h4>
           <p>You have successfully created a survey!</p>
         </Modal.Body>
         <Modal.Footer>

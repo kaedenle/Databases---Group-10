@@ -1,6 +1,6 @@
 .survey{
     display: flex;
-    height: 90vh;
+    height: 100vh;
     margin-left: 250px;
     flex-direction: column;
     font-family: 'Solway', serif;
@@ -17,7 +17,7 @@
 .survey-display-container{
    background-color: #d4d4d4;
    width: 70vw;
-   height: 80vh;
+   min-height: 70vh;
    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
    border-radius: 20px;
 }
@@ -28,6 +28,10 @@
     border: none;
     overflow: auto;
     resize: none;
+}
+
+.submit-button{
+    width: 25%;
 }
 
 .survey-link{

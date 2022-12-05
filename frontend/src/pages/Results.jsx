@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 //custom imports
 import Sidebar from '../components/Sidebar';
-import Survey from '../components/Survey';
+import Survey from '../components/SurveyResults';
 
 // css
 import '../css/Survey.scss';
@@ -15,39 +15,38 @@ function Results() {
   var user_data = JSON.parse(localStorage.getItem('user_data'));
 
   useEffect(() => {
-    const get_surveys = async (event) => {
-      try {
-        //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
-
-        const obj = {
-          userName: user_data.userName,
-        };
-
-        var js = JSON.stringify(obj);
-
-        const response = await fetch('http://localhost:5000/list_user_survey', {
-          method: 'POST',
-          body: js,
-          headers: { 'Content-Type': 'application/json' },
-        });
-
-        let res = JSON.parse(await response.text());
-        console.log(res);
-
-        if (res.error && res.error !== '') {
-          console.log(message);
-          setMessage(message);
-        } else {
-          setMessage('');
-          setSurveyList(res.info);
-          console.log(surveyList);
-        }
-      } catch (e) {
-        alert(e.toString());
-      }
-    };
     get_surveys();
-  }, [surveyList]);
+  }, []);
+
+  const get_surveys = async (event) => {
+    try {
+      //IN - userName, page (optional = 0), per_page (optional = 10), active (optional = true)
+
+      const obj = {
+        userName: user_data.userName,
+      };
+
+      var js = JSON.stringify(obj);
+
+      const response = await fetch('http://localhost:5000/list_user_survey', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      let res = JSON.parse(await response.text());
+      console.log(res);
+
+      if (res.error && res.error !== '') {
+        setMessage(message);
+      } else {
+        setMessage('');
+        setSurveyList(res.info);
+      }
+    } catch (e) {
+      alert(e.toString());
+    }
+  };
 
   function formatDate(string) {
     var options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -68,7 +67,7 @@ function Results() {
               >
                 <Link
                   className="text-dark survey-link"
-                  to={`/Results/${data.title}`}
+                  to={`/Results/${data.surveyID}`}
                 >
                   {data.title}
                 </Link>

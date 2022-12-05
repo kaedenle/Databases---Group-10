@@ -16,6 +16,7 @@ function Survey() {
   const { id } = useParams();
   const [count, setCount] = useState(0);
   const [title, setTitle] = useState('Survey Title');
+
   //console.log(id);
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
@@ -60,87 +61,77 @@ function Survey() {
   //   }, []);
 
   async function handleQuestions() {
-    if(!questionList)
-      return
-    for(let i = 0; i < questionList.length; i++){
+    if (!questionList) return;
+    for (let i = 0; i < questionList.length; i++) {
       //set questionID and answer
-      let questionID = questionList[i].questionID
+      let questionID = questionList[i].questionID;
       let answer;
-      if(answers.current[i])
-        answer = answers.current[i].target.value;
-      console.log(questionID + " " + answer)
+      if (answers.current[i]) answer = answers.current[i].target.value;
+      console.log(questionID + ' ' + answer);
       try {
         //IN - questionID, takerID, answer (optional)
         const obj = {
           takerName: user_data.userName,
           questionID: questionID,
-          answer: answer
+          answer: answer,
         };
-  
+
         var js = JSON.stringify(obj);
-  
+
         const response = await fetch('http://localhost:5000/answer', {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
         });
-  
+
         let res = JSON.parse(await response.text());
         console.log(res);
-  
+
         if (res.error && res.error !== '') {
           console.log(res.error);
           setMessage(res.error);
         } else {
           setMessage('');
         }
-      }
-      catch (e) {
+      } catch (e) {
         alert(e.toString());
       }
     }
-  };
+  }
 
   const handleText = (text) => {
     const wordLimit = 200;
     const regEx = /\s+$/;
     let words = text.split(' ').filter(Boolean);
 
-    if(words.length == wordLimit){
+    if (words.length == wordLimit) {
       //if space at end
-      if(regEx.test(text)){
+      if (regEx.test(text)) {
         //message that max count is 200 words goes here
-        return
-      }
-      else{
-        setDescription(words.slice(0, wordLimit).join(' '))
+        return;
+      } else {
+        setDescription(words.slice(0, wordLimit).join(' '));
       }
     }
-    if(words.length > wordLimit){
+    if (words.length > wordLimit) {
       //if backspaced on word
-      if(description.length > text.length)
-        setDescription(words.slice(0, wordLimit).join(' '))
-      else{
-        return
+      if (description.length > text.length)
+        setDescription(words.slice(0, wordLimit).join(' '));
+      else {
+        return;
       }
-    }
-    else
-      setDescription(text)
-  }
-
-  const handleClick = (num) => {
-    // 👇️ take parameter passed from Child component
-    setCount((current) => current + num);
+    } else setDescription(text);
   };
+
   return (
     <div>
       <Sidebar />
       <div className="survey">
         <div className="d-flex justify-content-center align-items-center h-100 ">
           <div className="survey-display-container d-flex justify-content-center ">
-            <div>
+            <div className="d-flex flex-column">
               <h2 className="text-center p-4 survey-title">{title}</h2>
-              <Button onClick={handleQuestions}>Hello</Button>
+
               <ol className="ordered">
                 {questionList.map((data, index) => (
                   <li key={index}>
@@ -163,7 +154,7 @@ function Survey() {
                                 name="group1"
                                 type={type}
                                 value={1}
-                                onClick={el => answers.current[index] = el}
+                                onClick={(el) => (answers.current[index] = el)}
                               />
                               <Form.Check
                                 inline
@@ -172,7 +163,7 @@ function Survey() {
                                 name="group1"
                                 type={type}
                                 value={2}
-                                onClick={el => answers.current[index] = el}
+                                onClick={(el) => (answers.current[index] = el)}
                               />
                               <Form.Check
                                 inline
@@ -181,7 +172,7 @@ function Survey() {
                                 name="group1"
                                 type={type}
                                 value={3}
-                                onClick={el => answers.current[index] = el}
+                                onClick={(el) => (answers.current[index] = el)}
                               />
                               <Form.Check
                                 inline
@@ -190,7 +181,7 @@ function Survey() {
                                 name="group1"
                                 type={type}
                                 value={4}
-                                onClick={el => answers.current[index] = el}
+                                onClick={(el) => (answers.current[index] = el)}
                               />
                               <Form.Check
                                 inline
@@ -199,7 +190,7 @@ function Survey() {
                                 name="group1"
                                 type={type}
                                 value={5}
-                                onClick={el => answers.current[index] = el}
+                                onClick={(el) => (answers.current[index] = el)}
                               />
                               <span>Strongly Agree</span>
                             </div>
@@ -207,30 +198,36 @@ function Survey() {
                         </Form>
                       </div>
                     ) : (
-                        <Form.Control
-                          id={data.questionID}
-                          placeholder="Response"
-                          as="textarea"
-                          rows={3}
-                          className="w-75"
-                          onChange={(e) => {
-                            e.preventDefault();
-                            //auto resize when text comes in
-                            e.target.style.height = 'inherit';
-                            e.target.style.height = `${e.target.scrollHeight}px`; 
-                            //keep under 200 words
-                            handleText(e.target.value, e)
-                            answers.current[index] = e
-                            answers.current[index].value = description
-                            //setDescription(e.target.value);
-                          }}
-                        ></Form.Control>
-                        
+                      <Form.Control
+                        id={data.questionID}
+                        placeholder="Response"
+                        as="textarea"
+                        rows={3}
+                        className="w-75"
+                        onChange={(e) => {
+                          e.preventDefault();
+                          //auto resize when text comes in
+                          e.target.style.height = 'inherit';
+                          e.target.style.height = `${e.target.scrollHeight}px`;
+                          //keep under 200 words
+                          handleText(e.target.value, e);
+                          answers.current[index] = e;
+                          answers.current[index].value = description;
+                          //setDescription(e.target.value);
+                        }}
+                      ></Form.Control>
                     )}
-                    
                   </li>
                 ))}
               </ol>
+              <Button
+                variant="dark"
+                size="small"
+                className="d-flex text-center m-3 submit-button"
+                onClick={handleQuestions}
+              >
+                Submit
+              </Button>
             </div>
           </div>
         </div>

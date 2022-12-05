@@ -10,7 +10,7 @@ import Results from './pages/Results';
 import Register from './pages/Register';
 import LogIn from './pages/LogIn';
 import EditSurveyPage from './pages/EditSurveyPage';
-import Survey from './components/Survey';
+import SurveyResults from './components/SurveyResults';
 import SurveyDisplay from './components/SurveyDisplay';
 
 function App() {
@@ -53,7 +53,7 @@ function App() {
           />
           <Route
             path="/Results/:id"
-            element={<Survey />}
+            element={<SurveyResults />}
           />
         </Routes>
       </Router>

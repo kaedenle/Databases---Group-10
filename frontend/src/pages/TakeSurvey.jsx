@@ -1,7 +1,7 @@
 import React, { useParams, useEffect, useState } from 'react';
 
 import Sidebar from '../components/Sidebar';
-import Survey from '../components/Survey';
+import Survey from '../components/SurveyResults';
 
 function TakeSurvey() {
   const [message, setMessage] = useState();
