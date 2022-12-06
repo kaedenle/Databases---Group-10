@@ -233,7 +233,7 @@ exports.setApp = function ( app, client )
         //var serach = [title, userID]
         const [result] = await client.query('SELECT * FROM Questions WHERE surveyID = ?', search);
         //get name of user
-        const [name] = await client.query('SELECT userName FROM Users WHERE userID = ?', [req.body.userID]);
+        const [name] = await client.query('SELECT userName FROM Users WHERE userID = ?', [res.locals.survey.creatorID]);
 
         //get email list
         var result_email;
