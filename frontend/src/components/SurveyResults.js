@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import * as AiIcons from 'react-icons/ai';
-import ReactToPrint from 'react-to-print';
+import ReactToPrint, { useReactToPrint } from 'react-to-print';
 
 import Button from 'react-bootstrap/Button';
 
 import '../css/Survey.scss';
 import Sidebar from './Sidebar';
 import AnswerList from './AnswerList';
+import { PrintComponent } from './PrintComponent';
 
 function SurveyResults() {
   const [message, setMessage] = useState('');
@@ -168,6 +169,9 @@ function SurveyResults() {
     navigate('/SurveyReport', { state: { id: id } });
   };
 
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   return (
     <div>
       <Sidebar />
@@ -175,6 +179,11 @@ function SurveyResults() {
         <div className="d-flex flex-inline justify-content-between">
           <h2 className="m-5">Survey Responses</h2>
           <div className="d-flex ">
+            <div>
+              <PrintComponent ref={componentRef} />
+              <Button onClick={handlePrint}>Print this out!</Button>
+            </div>
+
             <Button
               variant="dark"
               className="d-flex text-center m-5 "
