@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import Button from 'react-bootstrap/Button';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 
 import '../css/Survey.scss';
@@ -16,6 +16,7 @@ function Survey() {
   const { id } = useParams();
   const [count, setCount] = useState(0);
   const [title, setTitle] = useState('Survey Title');
+  const navigate = useNavigate();
 
   //console.log(id);
 
@@ -53,7 +54,7 @@ function Survey() {
         setQuestionList(res.info);
         //console.log(questionList);
         answers.current = answers.current.slice(0, res.info.length);
-        setAnswerList(new Array(res.info.length))
+        setAnswerList(new Array(res.info.length));
       }
     } catch (e) {
       alert(e.toString());
@@ -108,22 +109,19 @@ function Survey() {
         //message that max count is 200 words goes here
         return;
       } else {
-        array[index] = words.slice(0, wordLimit).join(' ')
+        array[index] = words.slice(0, wordLimit).join(' ');
         setAnswerList(array);
       }
-    }
-    else if (words.length > wordLimit) {
+    } else if (words.length > wordLimit) {
       //if backspaced on word (OLD vs NEW)
-      if(answerList[index].length < text.length){
-        array[index] = words.slice(0, wordLimit).join(' ')
+      if (answerList[index].length < text.length) {
+        array[index] = words.slice(0, wordLimit).join(' ');
         setAnswerList(array);
+      } else {
+        return;
       }
-      else{
-        return
-      }
-      
-    } else{
-      array[index] = text
+    } else {
+      array[index] = text;
       setAnswerList(array);
     }
   };
@@ -209,7 +207,7 @@ function Survey() {
                         as="textarea"
                         rows={3}
                         className="w-75"
-                        value = {answerList[index]}
+                        value={answerList[index]}
                         onChange={(e) => {
                           e.preventDefault();
                           //auto resize when text comes in
@@ -220,9 +218,9 @@ function Survey() {
 
                           handleText(e.target.value, tempArray, index, e);
                           answers.current[index] = e;
-                          answers.current[index].target.value = answerList[index];
+                          answers.current[index].target.value =
+                            answerList[index];
                         }}
-                        
                       ></Form.Control>
                     )}
                   </li>
@@ -232,7 +230,11 @@ function Survey() {
                 variant="dark"
                 size="small"
                 className="d-flex text-center m-3 submit-button"
-                onClick={handleQuestions}
+                onClick={() => {
+                  handleQuestions();
+                  alert('You Submitted the Survey');
+                  navigate('/Home');
+                }}
               >
                 Submit
               </Button>
