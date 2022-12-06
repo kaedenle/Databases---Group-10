@@ -159,19 +159,17 @@ function SurveyResults() {
     }
   };
 
-  const handleToggle = () => {
+  const handleToggle = async () => {
     setDisplay((display) => !display);
   };
   const toEdit = () => {
     navigate('/EditSurveyPage', { state: { title: title } });
   };
-  const toPrint = () => {
-    navigate('/SurveyReport', { state: { id: id } });
-  };
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
   return (
     <div>
       <Sidebar />
@@ -181,14 +179,13 @@ function SurveyResults() {
           <div className="d-flex ">
             <div>
               <PrintComponent ref={componentRef} />
-              <Button onClick={handlePrint}>Print this out!</Button>
             </div>
 
             <Button
               variant="dark"
               className="d-flex text-center m-5 "
               style={{ width: '10vw' }}
-              onClick={toPrint}
+              onClick={handlePrint}
             >
               Print Results
             </Button>
@@ -200,9 +197,17 @@ function SurveyResults() {
             >
               Edit Survey
             </Button>
+            <Button
+              variant="dark"
+              className="d-flex text-center m-5 "
+              style={{ width: '10vw' }}
+              onClick={delete_survey}
+            >
+              Delete Survey
+            </Button>
           </div>
         </div>
-        <div>
+        <div ref={componentRef}>
           <ol className="ordered">
             {questionList.map((data, index) => (
               <>
@@ -233,14 +238,6 @@ function SurveyResults() {
             ))}
           </ol>
         </div>
-        <Button
-          variant="dark"
-          className="d-flex text-center m-5 position-absolute bottom-0 "
-          style={{ width: '10vw' }}
-          onClick={delete_survey}
-        >
-          Delete Survey
-        </Button>
       </div>
     </div>
   );
