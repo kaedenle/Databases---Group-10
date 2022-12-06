@@ -325,7 +325,7 @@ exports.setApp = function ( app, client )
         //convert time to UTC
         var start_utc = new Date(req.body.period_start.toUTCString())
         var end_utc = new Date(req.body.period_end.toUTCString()) 
-        console.log(req.body.period_start.toUTCString() + " " + req.body.period_end.toUTCString());
+        //console.log(req.body.period_start.toUTCString() + " " + req.body.period_end.toUTCString());
 
         //correct datetime for timezone
         //req.body.period_end = new Date(req.body.period_end.getTime() - (req.body.period_end.getTimezoneOffset() * 60 * 1000))
@@ -353,7 +353,7 @@ exports.setApp = function ( app, client )
             return
         }
         //check whether active
-        console.log(new Date(currentTime));
+        //console.log(new Date(currentTime));
         var active = 0;
         if(start_int <= currentTime && currentTime <= end_int)
             active = 1;
@@ -407,10 +407,10 @@ exports.setApp = function ( app, client )
         var per_page = req.body.per_page
         if(!per_page)
             per_page = 10
-        console.log(req.body.userID);
+        //console.log(req.body.userID);
 
         const [result_ids] = await client.query('SELECT surveyID FROM Can_access WHERE userID = ? LIMIT ?, ?', [req.body.userID, page * per_page, per_page]);
-        console.log(result_ids);
+        //console.log(result_ids);
         //error message
         if(result_ids.length === 0){
             var ret = {error: "ERROR: User has no surveys"} 
@@ -432,7 +432,7 @@ exports.setApp = function ( app, client )
         var search = [surveys, page * per_page, per_page];
 
         var [result] = await client.query(sql, search);
-        console.log(result);
+        //console.log(result);
         for(let i = 0; i < result.length; i++){
             let [thing] = await client.query('SELECT userName FROM Users WHERE userID = ?', [result[i].creatorID]);
             result[i].creatorName = thing[0].userName
@@ -487,9 +487,9 @@ exports.setApp = function ( app, client )
         for(let i = 0; i < check_repeats.length; i++)
             repeats.push(check_repeats[i].email)
         
-        console.log("CR: ", repeats)
+        //console.log("CR: ", repeats)
         let use_list = req.body.part_emails.filter(x => !repeats.includes(x));
-        console.log("UL: ", use_list);
+        //console.log("UL: ", use_list);
 
         if(use_list.length == 0)
         {

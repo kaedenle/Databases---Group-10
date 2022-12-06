@@ -24,7 +24,8 @@ async function main() {
 
   //await connection.query("INSERT INTO Person (PersonID, Name) VALUES (?, (?));", int);
   try {
-    await connection.query("DELETE FROM Can_access WHERE surveyID = '685cba50-7495-11ed-8526-339feb6d8b74'");
+    //await connection.query("DELETE FROM Users WHERE username = 'user3'");
+    await connection.query("UPDATE Users SET password = 'password' WHERE username = 'user3'");
   } catch (e) {
     console.log(e);
   }
@@ -38,7 +39,7 @@ async function main() {
   var news = [['Kaeden', 'Tarova']];
 
   var [results] = await connection.query(
-    "SELECT * FROM Can_access WHERE surveyID = '685cba50-7495-11ed-8526-339feb6d8b74'"
+    "SELECT * FROM Users"
   );
   //var inp = ["'kaeden' OR Name = 'carl';"];
   //var [results] = await connection.query("SELECT * FROM new WHERE Name = ?", inp);
