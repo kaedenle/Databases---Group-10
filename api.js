@@ -377,6 +377,20 @@ exports.setApp = function ( app, client )
             period_end: req.body.period_end, active: active, surveyID: surveyID, currentTime: new Date(currentTime)};
         res.status(200).json(ret);
     });
+//----------DELETE SURVEY----------
+    app.post('/delete_survey', filter_questionID, get_user, get_survey, async (req, res, next) =>{
+        //IN - survey
+        try{
+            await client.query("DELETE FROM Surveys WHERE surveyID = ?", [req.body.surveyID])
+        }
+        catch(e){
+            var ret = {error: "ERROR: " + e} 
+            res.status(200).json(ret);
+            return
+        }
+        var ret = {message: "Deletion successful"}
+        res.status(200).json(ret);
+    });
 //----------LIST PARTICIPANT SURVEY----------
     //get list of surveys user is participating in
     app.post('/list_participant_survey', filter_questionID, filter_surveyID, get_user, async (req, res, next) => {
