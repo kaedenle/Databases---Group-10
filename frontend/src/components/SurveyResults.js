@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import '../css/Survey.scss';
 import Sidebar from './Sidebar';
+import AnswerList from './AnswerList';
 
 function SurveyResults() {
   const [message, setMessage] = useState('');
@@ -16,9 +17,11 @@ function SurveyResults() {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState([]);
   const location = useLocation();
+  const [display, setDisplay] = useState(false);
+  let numQuestions;
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
-  console.log(localStorage.getItem('user_data'));
+  // console.log(localStorage.getItem('user_data'));
 
   useEffect(() => {
     getSurvey();
@@ -52,6 +55,8 @@ function SurveyResults() {
         setMessage('');
         console.log(res);
         setTitle(res.title);
+        numQuestions = res.questions.length;
+        console.log(numQuestions);
       }
     } catch (e) {
       alert(e.toString());
@@ -126,6 +131,10 @@ function SurveyResults() {
     }
   };
 
+  const handleToggle = () => {
+    setDisplay((display) => !display);
+  };
+
   return (
     <div>
       <Sidebar />
@@ -146,16 +155,26 @@ function SurveyResults() {
               <>
                 <li key={index}>
                   {data.question}
+
                   <Button
                     variant="dark"
                     size="sm"
                     className="m-3"
                     onClick={() => {
                       get_answer(data.questionID);
+                      handleToggle();
                     }}
                   >
                     <AiIcons.AiOutlineDown />
                   </Button>
+                  {display ? (
+                    <AnswerList
+                      id={data.questionID}
+                      type={data.type}
+                    />
+                  ) : (
+                    ''
+                  )}
                 </li>
               </>
             ))}
