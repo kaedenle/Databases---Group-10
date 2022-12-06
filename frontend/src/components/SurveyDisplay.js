@@ -11,7 +11,7 @@ function Survey() {
   const answers = useRef([]);
   const [message, setMessage] = useState('');
   const [description, setDescription] = useState('');
-  const [surveyList, setSurveyList] = useState([]);
+  var [answerList, setAnswerList] = useState([]);
   const [questionList, setQuestionList] = useState([]);
   const { id } = useParams();
   const [count, setCount] = useState(0);
@@ -53,6 +53,7 @@ function Survey() {
         setQuestionList(res.info);
         //console.log(questionList);
         answers.current = answers.current.slice(0, res.info.length);
+        setAnswerList(new Array(res.info.length))
       }
     } catch (e) {
       alert(e.toString());
@@ -67,7 +68,6 @@ function Survey() {
       let questionID = questionList[i].questionID;
       let answer;
       if (answers.current[i]) answer = answers.current[i].target.value;
-      console.log(questionID + ' ' + answer);
       try {
         //IN - questionID, takerID, answer (optional)
         const obj = {
@@ -85,7 +85,6 @@ function Survey() {
         });
 
         let res = JSON.parse(await response.text());
-        console.log(res);
 
         if (res.error && res.error !== '') {
           console.log(res.error);
@@ -99,28 +98,34 @@ function Survey() {
     }
   }
 
-  const handleText = (text) => {
+  const handleText = (text, array, index, e) => {
     const wordLimit = 200;
     const regEx = /\s+$/;
     let words = text.split(' ').filter(Boolean);
-
     if (words.length == wordLimit) {
       //if space at end
       if (regEx.test(text)) {
         //message that max count is 200 words goes here
         return;
       } else {
-        setDescription(words.slice(0, wordLimit).join(' '));
+        array[index] = words.slice(0, wordLimit).join(' ')
+        setAnswerList(array);
       }
     }
-    if (words.length > wordLimit) {
-      //if backspaced on word
-      if (description.length > text.length)
-        setDescription(words.slice(0, wordLimit).join(' '));
-      else {
-        return;
+    else if (words.length > wordLimit) {
+      //if backspaced on word (OLD vs NEW)
+      if(answerList[index].length < text.length){
+        array[index] = words.slice(0, wordLimit).join(' ')
+        setAnswerList(array);
       }
-    } else setDescription(text);
+      else{
+        return
+      }
+      
+    } else{
+      array[index] = text
+      setAnswerList(array);
+    }
   };
 
   return (
@@ -204,17 +209,20 @@ function Survey() {
                         as="textarea"
                         rows={3}
                         className="w-75"
+                        value = {answerList[index]}
                         onChange={(e) => {
                           e.preventDefault();
                           //auto resize when text comes in
                           e.target.style.height = 'inherit';
                           e.target.style.height = `${e.target.scrollHeight}px`;
                           //keep under 200 words
-                          handleText(e.target.value, e);
+                          let tempArray = answerList;
+
+                          handleText(e.target.value, tempArray, index, e);
                           answers.current[index] = e;
-                          answers.current[index].value = description;
-                          //setDescription(e.target.value);
+                          answers.current[index].target.value = answerList[index];
                         }}
+                        
                       ></Form.Control>
                     )}
                   </li>
