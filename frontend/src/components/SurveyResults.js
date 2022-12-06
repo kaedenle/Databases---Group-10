@@ -4,6 +4,7 @@ import * as AiIcons from 'react-icons/ai';
 import ReactToPrint from 'react-to-print';
 
 import Button from 'react-bootstrap/Button';
+import { ComponentToPrint } from './ComponentToPrint';
 
 import '../css/Survey.scss';
 import Sidebar from './Sidebar';
