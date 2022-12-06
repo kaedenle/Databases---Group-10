@@ -128,6 +128,36 @@ function SurveyResults() {
     }
   };
 
+  const delete_survey = async () => {
+    //IN - questionID OR ((title AND username) AND question), page, per_page
+    try {
+      const obj = {
+        surveyID: id
+      };
+
+      var js = JSON.stringify(obj);
+
+      const response = await fetch('http://localhost:5000/delete_survey', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      let res = JSON.parse(await response.text());
+      console.log(res);
+
+      if (res.error && res.error !== '') {
+        console.log(res.error);
+        setMessage(message);
+      } else {
+        setMessage('');
+        navigate('/Results')
+      }
+    } catch (e) {
+      alert(e.toString());
+    }
+  };
+
   const handleToggle = () => {
     setDisplay((display) => !display);
   };
@@ -162,7 +192,7 @@ function SurveyResults() {
           <Button
             variant="dark"
             className="d-flex text-center m-5 float-end w-25 h-25"
-            // onClick={/* Delete */ }
+            onClick={delete_survey}
           >
             Delete
           </Button>
