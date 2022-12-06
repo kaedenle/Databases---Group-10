@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import * as AiIcons from 'react-icons/ai';
+import ReactToPrint from 'react-to-print';
 
 import Button from 'react-bootstrap/Button';
 
@@ -10,14 +11,14 @@ import AnswerList from './AnswerList';
 
 function SurveyResults() {
   const [message, setMessage] = useState('');
-  const [surveyList, setSurveyList] = useState([]);
   const [title, setTitle] = useState('');
   const { id } = useParams();
   const [questionList, setQuestionList] = useState([]);
   const navigate = useNavigate();
   const [answers, setAnswers] = useState([]);
-  const location = useLocation();
   const [display, setDisplay] = useState(false);
+  const componentRef = useRef();
+
   let numQuestions;
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
@@ -96,10 +97,6 @@ function SurveyResults() {
     }
   };
 
-  const toEdit = () => {
-    navigate('/EditSurveyPage', { state: { title: title } });
-  };
-
   const get_answer = async (id) => {
     //IN - questionID OR ((title AND username) AND question), page, per_page
     try {
@@ -134,6 +131,12 @@ function SurveyResults() {
   const handleToggle = () => {
     setDisplay((display) => !display);
   };
+  const toEdit = () => {
+    navigate('/EditSurveyPage', { state: { title: title } });
+  };
+  const toPrint = () => {
+    navigate('/SurveyReport', { state: { id: id } });
+  };
 
   return (
     <div>
@@ -141,12 +144,31 @@ function SurveyResults() {
       <div className="edit">
         <div className="d-flex flex-inline justify-content-between">
           <h2 className="m-5">Survey Responses</h2>
+          <ReactToPrint
+            trigger={() => <button>Print this out!</button>}
+            content={() => componentRef.current}
+          />
+
+          <Button
+            variant="dark"
+            className="d-flex text-center m-5 float-end w-25 h-25"
+            onClick={toPrint}
+          >
+            Print Results
+          </Button>
           <Button
             variant="dark"
             className="d-flex text-center m-5 float-end w-25 h-25"
             onClick={toEdit}
           >
             Edit Survey
+          </Button>
+          <Button
+            variant="dark"
+            className="d-flex text-center m-5 float-end w-25 h-25"
+            // onClick={/* Delete */ }
+          >
+            Delete
           </Button>
         </div>
         <div>
