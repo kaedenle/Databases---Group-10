@@ -53,7 +53,7 @@ function Home() {
       }
     };
     get_participant_surveys();
-  }, [surveyList, message]);
+  }, []);
   return (
     <>
       <Sidebar />
@@ -90,6 +90,7 @@ function Home() {
                     {data.title}
                   </Link>
                   <p>{data.description}</p>
+                  <p>by {data.creatorName}</p>
                 </Col>
               </Row>
             </li>

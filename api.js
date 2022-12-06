@@ -232,6 +232,8 @@ exports.setApp = function ( app, client )
         var search = [req.body.surveyID];
         //var serach = [title, userID]
         const [result] = await client.query('SELECT * FROM Questions WHERE surveyID = ?', search);
+        //get name of user
+        const [name] = await client.query('SELECT userName FROM Users WHERE userID = ?', [req.body.userID]);
 
         //get email list
         var result_email;
@@ -250,6 +252,7 @@ exports.setApp = function ( app, client )
         }
 
         var ret = res.locals.survey;
+        ret.creatorName = name[0].userName
         ret.emailList = list;
         ret.questions = result
         res.status(200).json(ret);
@@ -428,8 +431,12 @@ exports.setApp = function ( app, client )
         
         var search = [surveys, page * per_page, per_page];
 
-        const [result] = await client.query(sql, search);
+        var [result] = await client.query(sql, search);
         console.log(result);
+        for(let i = 0; i < result.length; i++){
+            let [thing] = await client.query('SELECT userName FROM Users WHERE userID = ?', [result[i].creatorID]);
+            result[i].creatorName = thing[0].userName
+        }
 
         var ret = {info: result};
         res.status(200).json(ret);
