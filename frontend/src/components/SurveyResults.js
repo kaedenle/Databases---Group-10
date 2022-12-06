@@ -164,15 +164,9 @@ function SurveyResults() {
   const toEdit = () => {
     navigate('/EditSurveyPage', { state: { title: title } });
   };
-  const toPrint = () => {};
-
-  var content = document.getElementById('divcontents');
-  var pri = document.getElementById('ifmcontentstoprint').contentWindow;
-  pri.document.open();
-  pri.document.write(content.innerHTML);
-  pri.document.close();
-  pri.focus();
-  pri.print();
+  const toPrint = () => {
+    navigate('/SurveyReport', { state: { id: id } });
+  };
 
   return (
     <div>
