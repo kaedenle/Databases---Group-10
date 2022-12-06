@@ -64,11 +64,13 @@ function Survey() {
 
   async function handleQuestions() {
     if (!questionList) return;
+    await lockout();
     for (let i = 0; i < questionList.length; i++) {
       //set questionID and answer
       let questionID = questionList[i].questionID;
       let answer;
       if (answers.current[i]) answer = answers.current[i].target.value;
+      
       try {
         //IN - questionID, takerID, answer (optional)
         const obj = {
@@ -96,6 +98,35 @@ function Survey() {
       } catch (e) {
         alert(e.toString());
       }
+    }
+  }
+
+  const lockout = async () => {
+    try {
+      //IN - questionID, takerID, answer (optional)
+      const obj = {
+        takerName: user_data.userName,
+        surveyID: id
+      };
+
+      var js = JSON.stringify(obj);
+
+      const response = await fetch('http://localhost:5000/lockout', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      let res = JSON.parse(await response.text());
+
+      if (res.error && res.error !== '') {
+        console.log(res.error);
+        setMessage(res.error);
+      } else {
+        setMessage('');
+      }
+    } catch (e) {
+      alert(e.toString());
     }
   }
 

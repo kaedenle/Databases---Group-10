@@ -257,6 +257,30 @@ exports.setApp = function ( app, client )
         ret.questions = result
         res.status(200).json(ret);
     });
+//----------LOCKOUT----------
+    app.post('/lockout', filter_questionID, get_user, get_survey, async (req, res, next) => {
+        //IN - takerName or takerID, survey
+        
+        if(!req.body.takerID)
+        {
+            var [name_id] = await client.query('SELECT userID FROM Users WHERE username = ?', [req.body.takerName])
+            req.body.takerID = name_id[0].userID
+        }
+         
+        //get value of taken
+        const [result] = await client.query('SELECT taken FROM Can_access WHERE userID = ? AND surveyID = ?', [req.body.takerID, req.body.surveyID]);
+        if(result.length == 0){
+            res.status(200).json({error:"ERROR: user can't take survey"})
+            return;
+        }
+        var taken;
+        if(result[0].taken == 0)
+            taken = 1
+        else
+            taken = 0
+        await client.query('UPDATE Can_access SET taken = ? WHERE userID = ? AND surveyID = ?', [taken, req.body.takerID, req.body.surveyID]);
+        res.status(200).json({message: "user locked out", taken: taken})
+    });
 //----------LIST USER SURVEY----------
     //get list of surveys user has created
     app.post('/list_user_survey', filter_questionID, filter_surveyID, get_user, async (req, res, next) => {
@@ -409,7 +433,7 @@ exports.setApp = function ( app, client )
             per_page = 10
         //console.log(req.body.userID);
 
-        const [result_ids] = await client.query('SELECT surveyID FROM Can_access WHERE userID = ? LIMIT ?, ?', [req.body.userID, page * per_page, per_page]);
+        const [result_ids] = await client.query('SELECT surveyID FROM Can_access WHERE userID = ? AND taken = 0 LIMIT ?, ?', [req.body.userID, page * per_page, per_page]);
         //console.log(result_ids);
         //error message
         if(result_ids.length === 0){
