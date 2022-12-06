@@ -18,12 +18,6 @@ export const SidebarData = [
     cName: 'nav-text',
   },
   {
-    title: 'Surveys',
-    icon: <RiIcons.RiSurveyLine />,
-    path: '/TakeSurvey',
-    cName: 'nav-text',
-  },
-  {
     title: 'Results',
     icon: <FaIcons.FaChartBar />,
     path: '/Results',
