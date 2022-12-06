@@ -40,7 +40,7 @@ function EditSurveyPage(props) {
   useEffect(() => {
     getSurvey();
     question_list();
-  }, [title, questionList]);
+  }, []);
 
   const getSurvey = async (event) => {
     try {
@@ -60,7 +60,7 @@ function EditSurveyPage(props) {
       });
 
       let res = JSON.parse(await response.text());
-      console.log(res);
+      //console.log(res);
 
       setTitle(res.title);
       setDescription(res.description);
@@ -107,6 +107,7 @@ function EditSurveyPage(props) {
         setMessage('');
       } else {
         setMessage('');
+        await question_list()
       }
     } catch (e) {
       alert(e.toString());
@@ -183,7 +184,6 @@ function EditSurveyPage(props) {
       alert(e.toString());
     }
   };
-  question_list();
 
   function handleQuestion(e) {
     setQuestion(e.target.value);
