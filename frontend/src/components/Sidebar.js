@@ -18,11 +18,11 @@ function Sidebar() {
       <IconContext.Provider value={{ color: '#fff' }}>
         <nav className="nav-menu">
           <ul className="nav-menu-items">
-            {SidebarData.map((item, index) => {
+            {SidebarData.map((item) => {
               return (
                 <>
                   <li
-                    key={index}
+                    key={item.title}
                     className={item.cName}
                   >
                     <Link to={item.path}>
@@ -33,8 +33,9 @@ function Sidebar() {
                 </>
               );
             })}
+
             <li
-              className="text-center position-absolute bottom-0 ml-5 mb-5"
+              className="text-center position-absolute bottom-0 ml-5 mb-3"
               style={{ listStyle: 'none', margin: '65px' }}
             >
               <AiIcons.AiOutlineClose />

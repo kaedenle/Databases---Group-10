@@ -64,9 +64,12 @@ function CreateSurvey() {
   return (
     <div className="create">
       <div className="container">
+        <h1 className="text-center d-flex flex-column mt-3 mb-3">
+          Create A Survey
+        </h1>
         <Form>
           <Form.Group
-            className="mb-3 mt-5"
+            className="mb-1 mx-auto"
             controlId="formBasicFirst"
           >
             <Form.Control
@@ -82,7 +85,7 @@ function CreateSurvey() {
           </Form.Group>
           <img
             src={thumbnail}
-            className="mt-5 "
+            className="mt-3"
             style={{ marginLeft: '20px' }}
             alt="Survey Thumbnail"
           />

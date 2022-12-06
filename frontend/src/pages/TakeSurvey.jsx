@@ -12,7 +12,9 @@ function TakeSurvey() {
       <div>
         <Sidebar />
         <div className="survey">
-          <p>You are viewing</p>
+          <div className="m-3 text-center">
+            <h1>Unfinished Surveys</h1>
+          </div>
         </div>
       </div>
     </>

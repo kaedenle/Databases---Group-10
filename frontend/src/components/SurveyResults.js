@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import * as AiIcons from 'react-icons/ai';
 
 import Button from 'react-bootstrap/Button';
-import { useParams, Link } from 'react-router-dom';
 
 import '../css/Survey.scss';
 import Sidebar from './Sidebar';
-import EditSurveyPage from '../pages/EditSurveyPage';
 
 function SurveyResults() {
   const [message, setMessage] = useState('');
@@ -17,6 +15,7 @@ function SurveyResults() {
   const [questionList, setQuestionList] = useState([]);
   const navigate = useNavigate();
   const [answers, setAnswers] = useState([]);
+  const location = useLocation();
 
   var user_data = JSON.parse(localStorage.getItem('user_data'));
   console.log(localStorage.getItem('user_data'));
@@ -52,6 +51,7 @@ function SurveyResults() {
       } else {
         setMessage('');
         console.log(res);
+        setTitle(res.title);
       }
     } catch (e) {
       alert(e.toString());
@@ -92,7 +92,7 @@ function SurveyResults() {
   };
 
   const toEdit = () => {
-    navigate('/EditSurveyPage', { state: { title: id } });
+    navigate('/EditSurveyPage', { state: { title: title } });
   };
 
   const get_answer = async (id) => {

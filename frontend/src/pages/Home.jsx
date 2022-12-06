@@ -56,11 +56,9 @@ function Home() {
   }, [surveyList, message]);
   return (
     <>
-      <div>
-        <Sidebar />
-      </div>
+      <Sidebar />
       <div className="home">
-        <h1 className="home-title"> Participate</h1>
+        <h1 className="m-4 text-center"> Participate</h1>
         <hr className="header" />
         <Container fluid>
           {/* This is where You will adjust to make it dynamic and add data of survey
@@ -81,8 +79,16 @@ function Home() {
                     alt="survey thumbnail"
                   />
                 </Col>
-                <Col style={{ marginTop: '20px' }}>
-                  <Link to={`/TakeSurvey/${data.surveyID}`}>{data.title}</Link>
+                <Col
+                  md={5}
+                  style={{ marginTop: '20px' }}
+                >
+                  <Link
+                    className="text-dark"
+                    to={`/TakeSurvey/${data.surveyID}`}
+                  >
+                    {data.title}
+                  </Link>
                   <p>{data.description}</p>
                 </Col>
               </Row>

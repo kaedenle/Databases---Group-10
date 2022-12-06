@@ -34,7 +34,7 @@
 .nav-menu-items {
   width: 100%;
   padding: 0px;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .navbar-toggle {
@@ -47,13 +47,4 @@
 
 span {
   margin-left: 20px;
-}
-
-.logout-button {
-  position: absolute;
-  bottom: 10px;
-  left: 20px;
-  color: white;
-  text-decoration: none;
-  list-style: none;
 }

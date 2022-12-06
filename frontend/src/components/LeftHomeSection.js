@@ -2,7 +2,7 @@ import surveyImg from '../assets/surveyImg.png';
 
 function LeftHomeSection() {
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
+    <div className="d-flex flex-column align-items-center justify-content-center mx-auto">
       <h1 className="text-center mt-4 mb-4">Survey Studies</h1>
 
       <p className="text-center">

@@ -6,15 +6,8 @@
   font-family: 'Solway', serif;
 }
 
-.home-title {
-  margin: 0 auto;
-  margin-top: 60px;
-  margin-bottom: 20px;
-}
-
 .thumbnail {
-  width: 65%;
-  height: 100%;
+  width: 15vw;
   border-radius: 10px;
 }
 
@@ -26,8 +19,8 @@
   width: 70%;
   margin: 0 auto;
   margin-bottom: 50px;
-  border: 0;
-  height: 2px;
+  border: 5;
+  height: 3px;
   background: #000;
   background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }

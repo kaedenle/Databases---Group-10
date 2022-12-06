@@ -12,9 +12,6 @@ const fakeApi = () => console.log('Api is called');
 function EditSurveyPage(props) {
   var user_data = JSON.parse(localStorage.getItem('user_data'));
   const [message, setMessage] = useState('');
-  let survey_data;
-  const [end, setEnd] = useState('');
-  const [start, setStart] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isCreating, setIsCreating] = useState(false);
@@ -41,45 +38,46 @@ function EditSurveyPage(props) {
   };
 
   useEffect(() => {
-    const getSurvey = async (event) => {
-      try {
-        //IN - title, userName
-
-        const obj = {
-          title: props.title,
-          userName: user_data.userName,
-        };
-
-        var js = JSON.stringify(obj);
-
-        const response = await fetch('http://localhost:5000/get_survey', {
-          method: 'POST',
-          body: js,
-          headers: { 'Content-Type': 'application/json' },
-        });
-
-        let res = JSON.parse(await response.text());
-        console.log(res);
-
-        setTitle(res.title);
-        setDescription(res.description);
-        setSurveyID(res.surveyID);
-
-        if (res.error && res.error !== '') {
-          console.log(message);
-          setMessage(message);
-        } else {
-          setMessage('');
-          console.log(res);
-          setPartList(res.emailList);
-        }
-      } catch (e) {
-        alert(e.toString());
-      }
-    };
-
     getSurvey();
-  }, [title]);
+    question_list();
+  }, [title, questionList]);
+
+  const getSurvey = async (event) => {
+    try {
+      //IN - title, userName
+
+      const obj = {
+        title: props.title,
+        userName: user_data.userName,
+      };
+
+      var js = JSON.stringify(obj);
+
+      const response = await fetch('http://localhost:5000/get_survey', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      let res = JSON.parse(await response.text());
+      console.log(res);
+
+      setTitle(res.title);
+      setDescription(res.description);
+      setSurveyID(res.surveyID);
+
+      if (res.error && res.error !== '') {
+        console.log(message);
+        setMessage(message);
+      } else {
+        setMessage('');
+        console.log(res);
+        setPartList(res.emailList);
+      }
+    } catch (e) {
+      alert(e.toString());
+    }
+  };
 
   const create_question = async (event) => {
     //IN - (userName AND title) OR surveyID, question, type
@@ -109,7 +107,6 @@ function EditSurveyPage(props) {
         setMessage('');
       } else {
         setMessage('');
-        console.log(message);
       }
     } catch (e) {
       alert(e.toString());
@@ -154,44 +151,39 @@ function EditSurveyPage(props) {
     setIsCreating((isCreating) => !isCreating);
   };
 
-  useEffect(() => {
-    const question_list = async (event) => {
-      try {
-        //IN - title, userName
+  const question_list = async (event) => {
+    try {
+      //IN - title, userName
 
-        const obj = {
-          title: props.title,
-          userName: user_data.userName,
-        };
+      const obj = {
+        title: props.title,
+        userName: user_data.userName,
+      };
 
-        var js = JSON.stringify(obj);
+      var js = JSON.stringify(obj);
 
-        const response = await fetch(
-          'http://localhost:5000/get_question_list',
-          {
-            method: 'POST',
-            body: js,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+      const response = await fetch('http://localhost:5000/get_question_list', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-        let res = JSON.parse(await response.text());
-        console.log(res);
+      let res = JSON.parse(await response.text());
+      console.log(res);
 
-        if (res.error && res.error !== '') {
-          console.log(message);
-          setMessage(message);
-        } else {
-          setMessage('');
-          setQuestionList(res.info);
-          console.log(questionList);
-        }
-      } catch (e) {
-        alert(e.toString());
+      if (res.error && res.error !== '') {
+        console.log(message);
+        setMessage(message);
+      } else {
+        setMessage('');
+        setQuestionList(res.info);
+        console.log(questionList);
       }
-    };
-    question_list();
-  });
+    } catch (e) {
+      alert(e.toString());
+    }
+  };
+  question_list();
 
   function handleQuestion(e) {
     setQuestion(e.target.value);
@@ -202,10 +194,9 @@ function EditSurveyPage(props) {
   }
 
   function handleAdd() {
-    if(part === '')
-      return
-    console.log("on it " + part)
-    add_participants(part)
+    if (part === '') return;
+    console.log('on it ' + part);
+    add_participants(part);
     setPart('');
   }
 
@@ -314,16 +305,6 @@ function EditSurveyPage(props) {
             }}
           >
             Add
-          </Button>
-          <Button
-            variant="dark"
-            className="w-50 mb-4"
-            onClick={() => {
-              /*console.log(partList);
-              add_participants();*/
-            }}
-          >
-            Submit List
           </Button>
         </div>
 
