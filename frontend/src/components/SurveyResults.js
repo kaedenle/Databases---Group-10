@@ -4,7 +4,6 @@ import * as AiIcons from 'react-icons/ai';
 import ReactToPrint from 'react-to-print';
 
 import Button from 'react-bootstrap/Button';
-import { ComponentToPrint } from './ComponentToPrint';
 
 import '../css/Survey.scss';
 import Sidebar from './Sidebar';
@@ -145,10 +144,6 @@ function SurveyResults() {
       <div className="edit">
         <div className="d-flex flex-inline justify-content-between">
           <h2 className="m-5">Survey Responses</h2>
-          <ReactToPrint
-            trigger={() => <button>Print this out!</button>}
-            content={() => componentRef.current}
-          />
 
           <Button
             variant="dark"
