@@ -132,7 +132,7 @@ function SurveyResults() {
     //IN - questionID OR ((title AND username) AND question), page, per_page
     try {
       const obj = {
-        surveyID: id
+        surveyID: id,
       };
 
       var js = JSON.stringify(obj);
@@ -151,7 +151,7 @@ function SurveyResults() {
         setMessage(message);
       } else {
         setMessage('');
-        navigate('/Results')
+        navigate('/Results');
       }
     } catch (e) {
       alert(e.toString());
@@ -164,9 +164,15 @@ function SurveyResults() {
   const toEdit = () => {
     navigate('/EditSurveyPage', { state: { title: title } });
   };
-  const toPrint = () => {
-    navigate('/SurveyReport', { state: { id: id } });
-  };
+  const toPrint = () => {};
+
+  var content = document.getElementById('divcontents');
+  var pri = document.getElementById('ifmcontentstoprint').contentWindow;
+  pri.document.open();
+  pri.document.write(content.innerHTML);
+  pri.document.close();
+  pri.focus();
+  pri.print();
 
   return (
     <div>
@@ -174,28 +180,24 @@ function SurveyResults() {
       <div className="edit">
         <div className="d-flex flex-inline justify-content-between">
           <h2 className="m-5">Survey Responses</h2>
-
-          <Button
-            variant="dark"
-            className="d-flex text-center m-5 float-end w-25 h-25"
-            onClick={toPrint}
-          >
-            Print Results
-          </Button>
-          <Button
-            variant="dark"
-            className="d-flex text-center m-5 float-end w-25 h-25"
-            onClick={toEdit}
-          >
-            Edit Survey
-          </Button>
-          <Button
-            variant="dark"
-            className="d-flex text-center m-5 float-end w-25 h-25"
-            onClick={delete_survey}
-          >
-            Delete
-          </Button>
+          <div className="d-flex ">
+            <Button
+              variant="dark"
+              className="d-flex text-center m-5 "
+              style={{ width: '10vw' }}
+              onClick={toPrint}
+            >
+              Print Results
+            </Button>
+            <Button
+              variant="dark"
+              className="d-flex text-center m-5 "
+              style={{ width: '10vw' }}
+              onClick={toEdit}
+            >
+              Edit Survey
+            </Button>
+          </div>
         </div>
         <div>
           <ol className="ordered">
@@ -228,6 +230,14 @@ function SurveyResults() {
             ))}
           </ol>
         </div>
+        <Button
+          variant="dark"
+          className="d-flex text-center m-5 position-absolute bottom-0 "
+          style={{ width: '10vw' }}
+          onClick={delete_survey}
+        >
+          Delete Survey
+        </Button>
       </div>
     </div>
   );
